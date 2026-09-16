@@ -1,0 +1,65 @@
+/* ── Verify payments ────────────────────────────────────────────────────── */
+.pv-cols { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: var(--s5); align-items: start; }
+.pv-rail { position: sticky; top: calc(var(--topbar-h) + var(--s5)); }
+
+/* ── Search results ── */
+.pv-hit {
+  width: 100%; display: flex; align-items: center; gap: var(--s3);
+  padding: 10px var(--s4); text-align: left;
+  border-bottom: 1px solid var(--line);
+  transition: background var(--fast) var(--ease);
+}
+.pv-hit:last-child { border-bottom: none; }
+.pv-hit:hover { background: var(--raised); }
+.pv-hit-go { font-size: 0.6875rem; font-weight: 700; color: var(--accent-text); flex-shrink: 0; }
+
+/* ── Summary ── */
+.pv-sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s3); padding: var(--s5); }
+.pv-sum-cell {
+  position: relative; overflow: hidden;
+  padding: var(--s3) var(--s3) var(--s3) var(--s4);
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--r);
+}
+.pv-sum-flag { position: absolute; left: 0; top: 0; bottom: 0; width: 2px; }
+.pv-sum-lbl { font-size: 0.6875rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint); }
+.pv-sum-val { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; margin-top: 2px; }
+
+/* ── Payment rows ── */
+.pv-pay {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s4);
+  padding: var(--s4) var(--s5);
+  border-bottom: 1px solid var(--line);
+}
+.pv-pay:last-child { border-bottom: none; }
+/* A payment that is neither settled nor failed is the one an admin can act on,
+   so it carries a left flag rather than blending into the list. */
+.pv-pay.pending { border-left: 2px solid var(--warning); background: var(--warning-bg); }
+.pv-pay-main { min-width: 0; flex: 1; }
+.pv-pay-title { display: flex; align-items: center; gap: 7px; font-size: 0.8125rem; font-weight: 600; }
+.pv-pi {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.6875rem; color: var(--text-faint);
+  word-break: break-all; margin-top: 4px;
+}
+.pv-pay-side { text-align: right; flex-shrink: 0; }
+.pv-amount { font-size: 1rem; font-weight: 600; letter-spacing: -0.02em; }
+.pv-note { display: flex; align-items: flex-start; gap: 5px; font-size: 0.6875rem; margin-top: 4px; line-height: 1.5; }
+
+/* ── Manual verification ── */
+.pv-warn {
+  display: flex; gap: 9px; align-items: flex-start;
+  padding: 11px var(--s3); margin-bottom: var(--s4);
+  background: var(--danger-bg); border: 1px solid rgba(190, 18, 60, .25);
+  border-radius: var(--r);
+  font-size: 0.75rem; line-height: 1.6; color: var(--danger);
+}
+
+@media (max-width: 1100px) {
+  .pv-cols { grid-template-columns: 1fr; }
+  .pv-rail { position: static; }
+}
+@media (max-width: 620px) {
+  .pv-sum { grid-template-columns: 1fr; }
+  .pv-pay { flex-direction: column; gap: var(--s2); }
+  .pv-pay-side { text-align: left; }
+}

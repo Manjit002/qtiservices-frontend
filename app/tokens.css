@@ -1,0 +1,228 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   QTIServices Design System — tokens
+   ══════════════════════════════════════════════════════════════════════════════
+
+   Palette rationale
+   -----------------
+   The page is graphite with a cool blue cast (#0A0C10), not pure black. Pure
+   black flattens elevation — you cannot build a believable surface stack on it,
+   and everything reads as one plane. A slight blue cast keeps the product
+   feeling like an instrument rather than a void.
+
+   Gold (#F0A500) is carried over from the existing QTIServices identity and is
+   the ONE constant across both portals — the wordmark, and nothing else. Each
+   portal then gets its own working accent (admin azure, expert violet), so the
+   two products are visibly siblings without being interchangeable.
+
+   Accent is used for state and action only. Surfaces stay neutral.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Surfaces: a real elevation stack, each step ~+6% lightness ── */
+  --bg:          #0A0C10;
+  --surface:     #11141B;
+  --raised:      #171B24;
+  --overlay:     #1C212C;
+  --line:        rgba(255, 255, 255, 0.07);
+  --line-strong: rgba(255, 255, 255, 0.12);
+
+  /* ── Text: four steps, no more. More than four and hierarchy stops reading. ── */
+  --text:      #E8ECF4;
+  --text-mid:  rgba(232, 236, 244, 0.66);
+  --text-dim:  rgba(232, 236, 244, 0.42);
+  --text-faint:rgba(232, 236, 244, 0.24);
+
+  /* ── Brand constant ── */
+  --gold:      #F0A500;
+
+  /* ── Status. Shared across portals so a badge means the same thing everywhere ── */
+  --success:   #10B981;
+  --warning:   #F59E0B;
+  --danger:    #F43F5E;
+  --info:      #22D3EE;
+  --neutral:   #64748B;
+
+  /* Tinted fills — a flat 8% wash reads cleaner than a border-only badge */
+  --success-bg: rgba(16, 185, 129, 0.10);
+  --warning-bg: rgba(245, 158, 11, 0.10);
+  --danger-bg:  rgba(244, 63, 94, 0.10);
+  --info-bg:    rgba(34, 211, 238, 0.10);
+  --neutral-bg: rgba(100, 116, 139, 0.14);
+
+  /* ── Accent: set per portal below ── */
+  --accent:      #4C8DFF;
+  --accent-soft: rgba(76, 141, 255, 0.12);
+  --accent-line: rgba(76, 141, 255, 0.28);
+  --accent-text: #8FB8FF;
+
+  /* ── Radius: 8 for controls, 12 for cards, 16 for panels ── */
+  --r-sm: 6px;
+  --r:    8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-full: 999px;
+
+  /* ── Elevation. Dark UI needs depth from contrast, not blur — kept shallow ── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow:    0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
+
+  /* ── Spacing: 4px base ── */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
+  --s5: 20px; --s6: 24px; --s8: 32px; --s10: 40px; --s12: 48px;
+
+  /* ── Layout ── */
+  --sidebar-w:    248px;
+  --sidebar-rail: 68px;
+  --topbar-h:     56px;
+  --content-max:  1440px;
+
+  /* ── Motion. One curve everywhere; speed is the only variable. ── */
+  /* Font stacks. Declared here so the whole system has one source of truth. */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Bebas Neue', 'Inter', sans-serif;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fast: 120ms;
+  --base: 200ms;
+  --slow: 320ms;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   LIGHT THEME
+   ══════════════════════════════════════════════════════════════════════════════
+   Not the dark theme inverted. Dark UI builds hierarchy by getting *lighter* as
+   it comes forward; light UI does the opposite — the page is the mid tone and
+   cards sit ABOVE it in white, with shadow doing the work borders do in dark.
+
+   Accents are darkened rather than reused: #4C8DFF is legible on near-black and
+   fails contrast on white, so light mode drops to a deeper blue. Status colours
+   are darkened for the same reason.
+   ══════════════════════════════════════════════════════════════════════════════ */
+[data-theme='light'] {
+  --bg:          #F6F7F9;
+  --surface:     #FFFFFF;
+  --raised:      #F2F4F7;
+  --overlay:     #E9ECF1;
+  --line:        rgba(16, 24, 40, 0.09);
+  --line-strong: rgba(16, 24, 40, 0.16);
+
+  --text:      #101828;
+  --text-mid:  rgba(16, 24, 40, 0.72);
+  --text-dim:  rgba(16, 24, 40, 0.55);
+  --text-faint:rgba(16, 24, 40, 0.38);
+
+  --gold:      #B47800;
+
+  --success:   #047857;
+  --warning:   #B45309;
+  --danger:    #BE123C;
+  --info:      #0E7490;
+  --neutral:   #475467;
+
+  --success-bg: rgba(4, 120, 87, 0.09);
+  --warning-bg: rgba(180, 83, 9, 0.10);
+  --danger-bg:  rgba(190, 18, 60, 0.08);
+  --info-bg:    rgba(14, 116, 144, 0.09);
+  --neutral-bg: rgba(71, 84, 103, 0.09);
+
+  --accent:      #1D4ED8;
+  --accent-soft: rgba(29, 78, 216, 0.08);
+  --accent-line: rgba(29, 78, 216, 0.22);
+  --accent-text: #1D4ED8;
+
+  /* Light mode needs real shadows — there is no luminance contrast to lean on. */
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow:    0 4px 14px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 20px 48px rgba(16, 24, 40, 0.16);
+}
+
+[data-theme='light'] .card,
+[data-theme='light'] table.data thead th { box-shadow: var(--shadow-sm); }
+
+/* Portal accents. Set on the shell so both can coexist in one document. */
+[data-portal='admin'] {
+  --accent:      #4C8DFF;
+  --accent-soft: rgba(76, 141, 255, 0.12);
+  --accent-line: rgba(76, 141, 255, 0.28);
+  --accent-text: #8FB8FF;
+}
+
+[data-portal='expert'] {
+  --accent:      #8B5CF6;
+  --accent-soft: rgba(139, 92, 246, 0.13);
+  --accent-line: rgba(139, 92, 246, 0.30);
+  --accent-text: #B79CFB;
+}
+
+/* Portal accents must be re-stated for light, or the dark values above win on
+   specificity and the accent fails contrast on white. */
+[data-theme='light'] [data-portal='admin'] {
+  --accent:      #1D4ED8;
+  --accent-soft: rgba(29, 78, 216, 0.08);
+  --accent-line: rgba(29, 78, 216, 0.22);
+  --accent-text: #1D4ED8;
+}
+
+[data-theme='light'] [data-portal='expert'] {
+  --accent:      #6D28D9;
+  --accent-soft: rgba(109, 40, 217, 0.08);
+  --accent-line: rgba(109, 40, 217, 0.22);
+  --accent-text: #6D28D9;
+}
+
+/* Primary buttons put dark text on the accent in dark mode; in light mode the
+   accent is dark, so the label has to flip to white. */
+[data-theme='light'] .btn-primary { color: #FFFFFF; }
+[data-theme='light'] .nav-count   { color: #FFFFFF; }
+[data-theme='light'] .ch-unread   { color: #FFFFFF; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   LEGACY PANELS IN LIGHT MODE
+
+   Panels not yet rebuilt re-declare the old dark palette on their own wrapper
+   (see styles/*-dashboard.css). Left alone they would stay near-black while the
+   rest of the app turned light — a half-dark page reads as a rendering fault.
+
+   The old token NAMES are remapped onto the light palette here. It is a
+   remap, not a redesign: contrast holds and the panels stay usable in both
+   themes. Each block is deleted as its panel is rebuilt.
+   ══════════════════════════════════════════════════════════════════════════════ */
+/* Expert only — the admin route has no `.legacy` panels left, so the admin
+   half of this remap was dead weight shipped on every admin page load. */
+[data-theme='light'] .legacy[data-portal='expert'] {
+  --bg:     #F6F7F9;
+  --bg2:    #FFFFFF;
+  --bg3:    #F2F4F7;
+  --card:   rgba(16, 24, 40, 0.02);
+  --border: rgba(16, 24, 40, 0.10);
+  --white:  #101828;
+  --muted:  rgba(16, 24, 40, 0.55);
+
+  --gold:   #B47800;  --gold2:   #92600A;
+  --blue:   #1D4ED8;  --blue2:   #1E40AF;
+  --cyan:   #0E7490;
+  --green:  #047857;
+  --red:    #BE123C;
+  --purple: #6D28D9;  --purple2: #5B21B6;
+}
+
+/* The old sheet paints surfaces with translucent white, which disappears on a
+   light page. These two rules give the legacy cards and rows a real surface. */
+[data-theme='light'] .legacy .card,
+[data-theme='light'] .legacy .stat-card,
+[data-theme='light'] .legacy .file-card,
+[data-theme='light'] .legacy .modal {
+  background: #FFFFFF;
+  box-shadow: var(--shadow-sm);
+}
+[data-theme='light'] .legacy table thead th { background: #F2F4F7; }

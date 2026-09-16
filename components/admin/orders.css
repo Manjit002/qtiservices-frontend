@@ -1,0 +1,170 @@
+/* ── Orders ─────────────────────────────────────────────────────────────── */
+.ord-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: var(--s5); flex-wrap: wrap; margin-bottom: var(--s5);
+}
+
+.ord-bar {
+  display: flex; align-items: center; gap: var(--s2);
+  flex-wrap: wrap; margin-bottom: var(--s4);
+}
+.ord-search { position: relative; flex: 1; min-width: 220px; max-width: 400px; }
+.ord-search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-faint); }
+.ord-search .input { padding-left: 32px; padding-right: 30px; }
+.ord-search .clear {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 22px; height: 22px; border-radius: var(--r-sm);
+  display: grid; place-items: center; color: var(--text-faint);
+}
+.ord-search .clear:hover { color: var(--text); background: var(--overlay); }
+
+/* Segmented filters — a real control, not a row of loose buttons. */
+.seg {
+  display: inline-flex; padding: 2px; gap: 1px;
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--r);
+  overflow-x: auto; max-width: 100%;
+}
+.seg::-webkit-scrollbar { display: none; }
+.seg button {
+  height: 26px; padding: 0 10px; border-radius: 6px;
+  font-size: 0.75rem; font-weight: 500; color: var(--text-dim);
+  white-space: nowrap;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+.seg button:hover { color: var(--text); }
+.seg button.on { background: var(--overlay); color: var(--text); font-weight: 600; }
+
+/* Bulk bar replaces the toolbar in place rather than pushing content down. */
+.bulk {
+  display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap;
+  padding: var(--s2) var(--s3); margin-bottom: var(--s4);
+  background: var(--accent-soft); border: 1px solid var(--accent-line);
+  border-radius: var(--r);
+  font-size: 0.8125rem;
+}
+
+.ord-id { font-size: 0.8125rem; font-weight: 600; color: var(--accent-text); }
+.ord-subject { max-width: 260px; }
+.ord-price { font-weight: 600; }
+
+.check {
+  width: 15px; height: 15px; border-radius: 4px; cursor: pointer;
+  accent-color: var(--accent);
+}
+
+/* ── Mobile cards ──────────────────────────────────────────────────────────
+   Below 860px the table becomes cards. A horizontally scrolling 8-column table
+   on a phone is not a responsive design, it is a broken one. */
+.ord-cards { display: none; }
+
+@media (max-width: 860px) {
+  .ord-table-wrap { display: none; }
+  .ord-cards { display: grid; gap: var(--s3); }
+  .ord-card { padding: var(--s4); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); }
+  .ord-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s3); }
+  .ord-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); margin-top: var(--s4); }
+  .ord-card-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--s4); padding-top: var(--s3); border-top: 1px solid var(--line); }
+  .ord-card-actions .btn { flex: 1; }
+  .ord-subject { max-width: none; }
+}
+
+.pager {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s3); flex-wrap: wrap;
+  padding: var(--s3) var(--s4); border-top: 1px solid var(--line);
+}
+.pager-nums { display: flex; gap: 4px; align-items: center; }
+.pg-n {
+  min-width: 28px; height: 28px; padding: 0 7px; border-radius: var(--r-sm);
+  font-size: 0.75rem; color: var(--text-dim);
+  display: grid; place-items: center;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+.pg-n:hover { background: var(--raised); color: var(--text); }
+.pg-n.on { background: var(--accent-soft); color: var(--accent-text); font-weight: 600; }
+.pg-n:disabled { opacity: .35; pointer-events: none; }
+
+/* ── Action column ──────────────────────────────────────────────────────────
+   Actions are ALWAYS visible — never hover-revealed, never buried behind a
+   single overflow menu. The primary action for the row's current state is a
+   labelled button; secondary actions are compact icons with tooltips; the
+   destructive one is separated by a divider so it can't be hit by accident. */
+.acts { display: flex; align-items: center; gap: 4px; justify-content: flex-end; }
+.acts-sep { width: 1px; height: 18px; background: var(--line-strong); margin: 0 2px; flex-shrink: 0; }
+
+.act {
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  height: 27px; padding: 0 8px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line-strong);
+  background: var(--raised);
+  color: var(--text-mid);
+  font-size: 0.6875rem; font-weight: 600; white-space: nowrap;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease);
+}
+.act:hover { background: var(--overlay); color: var(--text); border-color: var(--accent-line); }
+.act:disabled { opacity: .4; pointer-events: none; }
+.act-icon { width: 27px; padding: 0; }
+
+/* The row's primary action carries the accent so "what do I do next" is
+   answerable at a glance while scanning the column. */
+.act-primary { background: var(--accent); border-color: var(--accent); color: #06080D; }
+.act-primary:hover { background: var(--accent); filter: brightness(1.1); color: #06080D; }
+[data-theme='light'] .act-primary { color: #fff; }
+
+.act-danger { color: var(--danger); border-color: rgba(190, 18, 60, .28); }
+.act-danger:hover { background: var(--danger-bg); color: var(--danger); border-color: var(--danger); }
+
+/* Tooltip for icon-only actions. Backed by a real aria-label and title, so the
+   visual tooltip is an enhancement rather than the only affordance. */
+.tip { position: relative; }
+.tip::after {
+  content: attr(data-tip);
+  position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+  padding: 4px 8px; border-radius: var(--r-sm);
+  background: var(--overlay); border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow);
+  color: var(--text); font-size: 0.6875rem; font-weight: 500; white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity var(--fast) var(--ease);
+  z-index: 20;
+}
+.tip:hover::after, .tip:focus-visible::after { opacity: 1; }
+
+@media (max-width: 860px) {
+  .acts { justify-content: flex-start; flex-wrap: wrap; }
+  .act { height: 30px; flex: 1; min-width: 84px; }
+  .act-icon { flex: 0 0 auto; min-width: 0; width: 34px; }
+  .tip::after { display: none; }
+  /* On the mobile CARD layout there is room for labelled actions, so the menu
+     anchors to the right instead of sitting inline with the wrapped buttons. */
+  .amenu { flex: 0 0 auto; margin-left: auto; }
+  .amenu-pop { right: 0; left: auto; }
+}
+
+/* ── Overflow menu ──────────────────────────────────────────────────────── */
+.amenu { position: relative; display: none; }
+.amenu-pop {
+  position: absolute; right: 0; top: calc(100% + 4px); z-index: 30;
+  min-width: 178px; padding: 4px;
+  background: var(--overlay); border: 1px solid var(--line-strong);
+  border-radius: var(--r); box-shadow: var(--shadow-lg);
+  animation: rise var(--fast) var(--ease);
+}
+.amenu-item {
+  width: 100%; display: flex; align-items: center; gap: 9px;
+  height: 32px; padding: 0 10px; border-radius: var(--r-sm);
+  font-size: 0.8125rem; color: var(--text-mid); text-align: left;
+}
+.amenu-item:hover { background: var(--raised); color: var(--text); }
+.amenu-item.danger { color: var(--danger); }
+.amenu-item.danger:hover { background: var(--danger-bg); }
+.amenu-item:disabled { opacity: .4; pointer-events: none; }
+
+/* Below 1100px the secondary icon actions collapse into the menu; the two
+   primary actions stay visible so the row is never reduced to a lone ⋮. */
+@media (max-width: 1100px) {
+  .amenu { display: block; }
+  .acts .act-collapsible { display: none; }
+  .acts-sep { display: none; }
+}

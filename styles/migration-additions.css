@@ -1,0 +1,182 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   MIGRATION ADDITIONS — the only CSS written for this migration.
+   
+   Every other rule in styles/ is lifted verbatim from the original <style>
+   blocks. This file covers UI that has no counterpart in the source: elements
+   the legacy pages built by string-concatenating inline styles into innerHTML,
+   plus a few structural helpers React needs. Everything below is composed from
+   the existing design tokens so it reads as the same system, not a new one.
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Button reset ────────────────────────────────────────────────────────────
+   The original markup used <a> and <div> for these, so the source CSS never
+   resets background/border — a <button> therefore inherits the UA's grey
+   `buttonface` fill, and the light `var(--muted)` text becomes invisible on it.
+   React needs real buttons for keyboard and screen-reader support, so the reset
+   lives here instead. Appearance is unchanged; semantics improve. ── */
+.app[data-portal] .sb-item,
+.dash-row,
+.up-next-btn,
+.cc-item-pin,
+.chat-reply-btn,
+.td-id,
+.copy-btn,
+.avail-opt {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+/* Nav items must fill the sidebar; a button is content-width by default. */
+.app[data-portal] .sb-item { width: 100%; }
+
+/* ── Shell wrapper. The original set display:flex on <body>; React needs a real
+      element, so .shell takes that role. .sidebar stays position:fixed and
+      .main keeps its margin-left, exactly as before. ── */
+.shell { display: flex; min-height: 100vh; background: var(--bg); }
+
+/* ── Sidebar bits the original produced inline ── */
+.sb-brand { padding: 20px 20px 14px; border-bottom: 1px solid var(--border); }
+.sb-section { margin-bottom: 6px; }
+.sb-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Topbar email ── */
+.topbar-email {
+  font-size: .78rem; color: var(--muted); max-width: 200px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* ── Dashboard widget rows (legacy built these with innerHTML) ── */
+.dash-widgets {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px; margin-top: 22px;
+}
+.dash-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  width: 100%; padding: 12px 16px; text-align: left; background: none;
+  border: none; border-bottom: 1px solid var(--border);
+  color: inherit; cursor: pointer; transition: background .15s;
+}
+.dash-row:last-child { border-bottom: none; }
+.dash-row:hover { background: rgba(255, 255, 255, .03); }
+.dash-row-id {
+  display: block; color: var(--gold); font-size: .9rem; letter-spacing: .04em;
+}
+.dash-row-sub {
+  display: block; font-size: .76rem; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 240px;
+}
+
+/* ── Orders table helpers ── */
+.search-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.search-row .search-input { flex: 1; }
+.row-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.td-subject {
+  max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* ── Pagination ellipsis ── */
+.pg-ellipsis { color: var(--muted); font-size: .76rem; padding: 0 4px; align-self: center; }
+
+/* ── Chat additions ── */
+/* Connection indicator: the legacy page logged state to the console only, but a
+   dropped socket is something the admin needs to see. */
+.conn-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  background: var(--muted); transition: background .25s;
+}
+.conn-dot.connected { background: var(--green); }
+.conn-dot.connecting,
+.conn-dot.reconnecting { background: var(--gold); animation: livePulse 1.3s infinite; }
+.conn-dot.error, .conn-dot.closed { background: var(--red); }
+
+.chat-load-older {
+  display: block; margin: 0 auto 12px; padding: 6px 14px; border-radius: 20px;
+  background: rgba(255, 255, 255, .05); border: 1px solid var(--border);
+  color: var(--muted); font-size: .74rem; font-weight: 600; cursor: pointer;
+  transition: all .2s;
+}
+.chat-load-older:hover { background: rgba(255, 255, 255, .1); color: var(--white); }
+
+.chat-reply-btn {
+  background: none; border: none; color: inherit; opacity: .55;
+  cursor: pointer; font-size: .74rem; padding: 0 2px; transition: opacity .2s;
+}
+.chat-reply-btn:hover { opacity: 1; }
+
+/* Back arrow is mobile-only — the desktop split view never needs it.
+   Needs [data-portal] to outrank the scoped `.chat-head-btn{display:flex}`. */
+.app[data-portal] .cc-back-btn { display: none; }
+
+/* ── Expert panel rows ── */
+.up-next-row, .dl-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+}
+.up-next-row:last-child, .dl-row:last-child { border-bottom: none; }
+.up-next-btn {
+  background: none; border: none; color: inherit; text-align: left;
+  cursor: pointer; flex: 1; min-width: 0;
+}
+.up-next-btn:hover { color: var(--purple2); }
+
+.avail-opt {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: rgba(255, 255, 255, .03); cursor: pointer; transition: all .2s;
+  font-size: .82rem; font-weight: 600;
+}
+.avail-opt:hover { border-color: rgba(139, 92, 246, .4); }
+.avail-opt.active {
+  border-color: var(--purple); background: rgba(139, 92, 246, .12); color: var(--purple2);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .app[data-portal] .cc-back-btn { display: flex; }
+  /* Chat is a two-pane split on desktop; on mobile one pane at a time, driven
+     by .chat-active on the wrapper. */
+  .app[data-portal] .cc-wrap .cc-list-col { width: 100%; }
+  .app[data-portal] .cc-wrap .cc-chat-col { display: none; }
+  .app[data-portal] .cc-wrap.chat-active .cc-list-col { display: none; }
+  .app[data-portal] .cc-wrap.chat-active .cc-chat-col { display: flex; width: 100%; }
+  .dash-widgets { grid-template-columns: 1fr; }
+  .td-subject, .dash-row-sub { max-width: 160px; }
+}
+
+/* ── Classes orphaned when globals.css was retired ──────────────────────────
+   These are used by components that still render inside .legacy wrappers. They
+   were defined only in globals.css, which is no longer imported — so they had
+   silently become no-ops.
+
+   `.sr-only` mattered most: undefined, "screen reader only" text renders as
+   ordinary visible text, so the label leaks into the layout. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.font-display { font-family: var(--font-display), sans-serif; letter-spacing: .03em; }
+
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table thead th {
+  padding: var(--s2) var(--s4); text-align: left;
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--text-dim); border-bottom: 1px solid var(--line); white-space: nowrap;
+}
+.data-table tbody td { padding: var(--s3) var(--s4); border-bottom: 1px solid var(--line); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background: var(--raised); }
+
+.error-state {
+  padding: var(--s6) var(--s5); text-align: center;
+  font-size: 0.8125rem; color: var(--danger);
+}
+.error-retry {
+  margin-left: 6px; font-weight: 600; color: var(--accent);
+  text-decoration: underline; cursor: pointer;
+}

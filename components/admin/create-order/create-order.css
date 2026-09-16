@@ -1,0 +1,77 @@
+/* ── Create order ───────────────────────────────────────────────────────── */
+.co-cols { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: var(--s5); align-items: start; }
+.co-rail { position: sticky; top: calc(var(--topbar-h) + var(--s5)); }
+.co-form { display: grid; gap: var(--s5); }
+
+.co-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3) var(--s4); padding: var(--s5); }
+.co-grid .fl { margin-bottom: 0; }
+.co-grid .full { grid-column: 1 / -1; }
+
+.co-req { color: var(--danger); margin-left: 2px; }
+
+/* ── Selected student ── */
+.co-student {
+  display: flex; align-items: flex-start; gap: var(--s3);
+  padding: var(--s4); margin: 0 var(--s5) var(--s4);
+  background: var(--accent-soft); border: 1px solid var(--accent-line); border-radius: var(--r-md);
+}
+.co-student-main { flex: 1; min-width: 0; }
+
+/* A new-account warning is amber, not red — creating the student is expected
+   behaviour here, not an error. */
+.co-newacct {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 10px var(--s3); margin: 0 var(--s5) var(--s4);
+  background: var(--warning-bg); border: 1px solid rgba(245, 158, 11, .28);
+  border-radius: var(--r); font-size: 0.75rem; line-height: 1.6; color: var(--warning);
+}
+
+/* ── Review rail ── */
+.co-review-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--s3);
+  padding: 8px 0; border-bottom: 1px solid var(--line);
+}
+.co-review-row:last-child { border-bottom: none; }
+.co-review-lbl { font-size: 0.75rem; color: var(--text-dim); flex-shrink: 0; }
+.co-review-val { font-size: 0.8125rem; text-align: right; min-width: 0; }
+.co-review-val.empty { color: var(--text-faint); font-style: italic; }
+
+/* ── File queue ── */
+.co-files { padding: 0 var(--s5) var(--s5); }
+.co-drop {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: var(--s6); border-radius: var(--r-md);
+  border: 1px dashed var(--line-strong); background: var(--raised);
+  color: var(--text-dim); font-size: 0.8125rem; text-align: center;
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+  width: 100%;
+}
+.co-drop:hover, .co-drop.over { border-color: var(--accent); background: var(--accent-soft); color: var(--text); }
+.co-file {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 10px; margin-top: var(--s2);
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--r);
+  font-size: 0.75rem;
+}
+
+/* ── Success ── */
+.co-done { text-align: center; padding: var(--s10) var(--s5); }
+.co-done-icon {
+  width: 52px; height: 52px; margin: 0 auto var(--s4); border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--success-bg); color: var(--success);
+}
+.co-done-id {
+  display: inline-block; margin-top: var(--s3); padding: 7px 16px;
+  background: var(--raised); border: 1px solid var(--line-strong); border-radius: var(--r);
+  font-size: 1.125rem; font-weight: 600; color: var(--accent-text);
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 1100px) {
+  .co-cols { grid-template-columns: 1fr; }
+  .co-rail { position: static; }
+}
+@media (max-width: 620px) {
+  .co-grid { grid-template-columns: 1fr; }
+}

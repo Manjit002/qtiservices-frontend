@@ -1,0 +1,358 @@
+/* ── Chat ───────────────────────────────────────────────────────────────────
+   Two panes on desktop, one at a time on mobile. Height is locked to the
+   viewport minus the topbar and content padding so the composer never scrolls
+   out of reach and the thread scrolls internally. */
+
+/* ══ THE COMPOSER BUG ══
+   `.ch-thread` and `.ch-list` are grid items that are also flex columns
+   containing a `flex:1; overflow-y:auto` child. A grid/flex item defaults to
+   `min-height: auto`, which means it refuses to shrink below its CONTENT — so
+   the scroll pane grew to the full message height instead of scrolling, and
+   pushed the composer off the bottom of the screen. It was always rendered;
+   it was just below the fold with no way to reach it.
+
+   `min-height: 0` on every link in the chain is the fix, and it has to be on
+   every link — one missing level reintroduces the bug. */
+.ch {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  grid-template-rows: 100%;
+  height: calc(100dvh - var(--topbar-h) - var(--s6) * 2);
+  min-height: 460px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+/* ── Conversation list ── */
+.ch-list { display: flex; flex-direction: column; border-right: 1px solid var(--line); min-width: 0; min-height: 0; }
+.ch-list-head { padding: var(--s3); border-bottom: 1px solid var(--line); display: grid; gap: var(--s2); }
+.ch-list-body { flex: 1; min-height: 0; overflow-y: auto; }
+
+.ch-item {
+  width: 100%; display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px var(--s3);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  transition: background var(--fast) var(--ease);
+}
+.ch-item:hover { background: var(--raised); }
+.ch-item.on { background: var(--accent-soft); }
+.ch-item.on .ch-item-name { color: var(--text); }
+.ch-item-body { flex: 1; min-width: 0; }
+.ch-item-row { display: flex; align-items: baseline; gap: var(--s2); }
+.ch-item-name { flex: 1; font-size: 0.8125rem; font-weight: 600; }
+.ch-item-time { font-size: 0.6875rem; color: var(--text-faint); flex-shrink: 0; }
+.ch-item-prev { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; }
+.ch-item-meta { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+.ch-item-ord { font-size: 0.6875rem; color: var(--accent-text); font-weight: 600; }
+.ch-unread {
+  min-width: 17px; height: 17px; padding: 0 5px; border-radius: var(--r-full);
+  background: var(--accent); color: #06080D;
+  font-size: 0.6875rem; font-weight: 700; display: grid; place-items: center;
+}
+.ch-pin { opacity: 0; color: var(--text-faint); padding: 2px; border-radius: 4px; flex-shrink: 0; }
+.ch-item:hover .ch-pin, .ch-pin.on { opacity: 1; }
+.ch-pin.on { color: var(--gold); }
+
+/* ── Thread ── */
+.ch-thread { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.ch-head {
+  display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s3) var(--s4); border-bottom: 1px solid var(--line); flex-shrink: 0;
+}
+.ch-head-name { font-size: 0.875rem; font-weight: 600; }
+.ch-head-sub { font-size: 0.6875rem; color: var(--text-dim); display: flex; align-items: center; gap: 5px; }
+.ch-head-sub.online { color: var(--success); }
+
+.conn { width: 7px; height: 7px; border-radius: 50%; background: var(--text-faint); flex-shrink: 0; }
+.conn.connected { background: var(--success); }
+.conn.connecting, .conn.reconnecting { background: var(--warning); animation: pulse 1.4s infinite; }
+.conn.error, .conn.closed { background: var(--danger); }
+@keyframes pulse { 50% { opacity: .35; } }
+
+.ch-search { padding: var(--s2) var(--s4); border-bottom: 1px solid var(--line); flex-shrink: 0; }
+
+.ch-body {
+  flex: 1; min-height: 0; overflow-y: auto;
+  padding: var(--s4);
+  display: flex; flex-direction: column; gap: 3px;
+  overscroll-behavior: contain;
+}
+
+.ch-day {
+  align-self: center; margin: var(--s4) 0 var(--s3);
+  padding: 3px 10px; border-radius: var(--r-full);
+  background: var(--raised); border: 1px solid var(--line);
+  font-size: 0.6875rem; color: var(--text-dim);
+}
+
+.ch-row { display: flex; }
+.ch-row.mine { justify-content: flex-end; }
+.ch-bubble {
+  max-width: min(72%, 520px);
+  padding: 8px 11px; border-radius: var(--r-md);
+  background: var(--raised); border: 1px solid var(--line);
+  font-size: 0.8125rem; line-height: 1.55;
+}
+/* The admin's own messages take the accent; the student's stay neutral, so
+   authorship reads at a glance without colour-coding both sides. */
+.ch-row.mine .ch-bubble {
+  background: var(--accent-soft); border-color: var(--accent-line);
+  border-bottom-right-radius: var(--r-sm);
+}
+.ch-row:not(.mine) .ch-bubble { border-bottom-left-radius: var(--r-sm); }
+
+.ch-quote {
+  padding: 5px 8px; margin-bottom: 6px;
+  border-left: 2px solid var(--accent);
+  background: rgba(255, 255, 255, 0.035); border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+.ch-quote-name { font-size: 0.6875rem; font-weight: 600; color: var(--accent-text); }
+.ch-quote-text { font-size: 0.75rem; color: var(--text-dim); }
+
+.ch-img { max-width: 260px; border-radius: var(--r); cursor: pointer; display: block; margin-bottom: 5px; }
+.ch-file {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 9px; margin-bottom: 5px;
+  background: rgba(255, 255, 255, 0.04); border-radius: var(--r);
+  color: inherit;
+}
+.ch-file:hover { background: rgba(255, 255, 255, 0.07); }
+
+.ch-meta {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 4px; font-size: 0.625rem; color: var(--text-faint);
+}
+.ch-tick.seen { color: var(--info); }
+.ch-reply { opacity: 0; padding: 1px; border-radius: 3px; }
+.ch-bubble:hover .ch-reply { opacity: 1; }
+
+.ch-typing {
+  display: flex; align-items: center; gap: 7px;
+  padding: 0 var(--s4) var(--s2); font-size: 0.75rem; color: var(--text-dim); flex-shrink: 0;
+}
+.ch-dots { display: inline-flex; gap: 3px; }
+.ch-dots i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; animation: bounce 1.2s infinite; }
+.ch-dots i:nth-child(2) { animation-delay: .15s; }
+.ch-dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes bounce { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
+
+/* ── Composer ── */
+.ch-comp { border-top: 1px solid var(--line); padding: var(--s3) var(--s4); flex-shrink: 0; }
+.ch-reply-bar {
+  display: flex; align-items: center; gap: var(--s2);
+  padding: 6px 9px; margin-bottom: var(--s2);
+  background: var(--raised); border-left: 2px solid var(--accent); border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  font-size: 0.75rem;
+}
+.ch-queue { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--s2); }
+.ch-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 8px; border-radius: var(--r-sm);
+  background: var(--raised); border: 1px solid var(--line);
+  font-size: 0.75rem; max-width: 200px;
+}
+.ch-comp-row { display: flex; align-items: flex-end; gap: var(--s2); }
+.ch-input {
+  flex: 1; min-height: 36px; max-height: 132px;
+  padding: 8px 11px; resize: none;
+  background: var(--raised); border: 1px solid var(--line-strong); border-radius: var(--r);
+  font-size: 0.8125rem; line-height: 1.5;
+}
+.ch-input:focus { outline: none; border-color: var(--accent); }
+
+.ch-back { display: none; }
+
+@media (max-width: 860px) {
+  .ch { grid-template-columns: 1fr; height: calc(100dvh - var(--topbar-h) - var(--s4) * 2); }
+  .ch-thread { display: none; }
+  .ch.open .ch-list { display: none; }
+  .ch.open .ch-thread { display: flex; }
+  .ch-back { display: grid; }
+  .ch-bubble { max-width: 84%; }
+}
+
+/* ── Composer, rebuilt ──────────────────────────────────────────────────── */
+.ch-comp-row { display: flex; align-items: flex-end; gap: var(--s2); }
+
+/* Auto-growing textarea: rows=1 plus a JS-set height, capped so a long message
+   never eats the thread. */
+.ch-input {
+  flex: 1; min-height: 38px; max-height: 148px;
+  padding: 9px 12px; resize: none;
+  background: var(--raised); border: 1px solid var(--line-strong); border-radius: var(--r-md);
+  font-size: 0.8125rem; line-height: 1.5;
+  overflow-y: auto;
+  transition: border-color var(--fast) var(--ease);
+}
+.ch-input:focus { outline: none; border-color: var(--accent); }
+.ch-input:disabled { opacity: .6; }
+
+.ch-send {
+  width: 38px; height: 38px; flex-shrink: 0; border-radius: var(--r-md);
+  display: grid; place-items: center;
+  background: var(--accent); color: #06080D;
+  transition: filter var(--fast) var(--ease), opacity var(--fast) var(--ease);
+}
+[data-theme='light'] .ch-send { color: #fff; }
+.ch-send:hover:not(:disabled) { filter: brightness(1.1); }
+.ch-send:disabled { opacity: .4; cursor: default; }
+
+.ch-attach {
+  width: 38px; height: 38px; flex-shrink: 0; border-radius: var(--r-md);
+  display: grid; place-items: center;
+  color: var(--text-mid);
+  border: 1px solid var(--line-strong); background: var(--raised);
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+.ch-attach:hover { background: var(--overlay); color: var(--text); }
+
+/* ── Attachment previews ── */
+.ch-queue { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s2); }
+.ch-att {
+  position: relative;
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 9px; max-width: 240px;
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--r);
+}
+.ch-att-thumb {
+  width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--r-sm);
+  object-fit: cover; background: var(--overlay);
+}
+.ch-att-icon {
+  width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--r-sm);
+  display: grid; place-items: center;
+  background: var(--overlay); color: var(--accent-text);
+}
+.ch-att-meta { min-width: 0; }
+.ch-att-name { font-size: 0.75rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ch-att-size { font-size: 0.6875rem; color: var(--text-dim); }
+.ch-att-rm {
+  width: 20px; height: 20px; flex-shrink: 0; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--overlay); color: var(--text-dim);
+}
+.ch-att-rm:hover { background: var(--danger-bg); color: var(--danger); }
+
+/* ── New-message pill ──────────────────────────────────────────────────────
+   Shown only when a message arrives while the admin is reading older ones —
+   never yanks the scroll position out from under them. */
+.ch-new {
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
+  z-index: 5;
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 30px; padding: 0 13px; border-radius: var(--r-full);
+  background: var(--accent); color: #06080D;
+  font-size: 0.75rem; font-weight: 600;
+  box-shadow: var(--shadow);
+  animation: rise var(--fast) var(--ease);
+}
+[data-theme='light'] .ch-new { color: #fff; }
+.ch-thread-inner { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+.ch-ctx { display: flex; align-items: center; gap: 6px; }
+
+@media (max-width: 860px) {
+  /* 100dvh follows the visual viewport, so the composer stays above the
+     on-screen keyboard instead of being covered by it. */
+  .ch { height: calc(100dvh - var(--topbar-h) - var(--s4) * 2); }
+  .ch-att { max-width: 100%; }
+}
+
+@media (max-width: 1200px) { .ch-hide-sm { display: none; } }
+
+/* ── Connection banner ────────────────────────────────────────────────────
+   Sits between the header and the thread so it never covers the composer or
+   shifts the message list when it appears and disappears. */
+.ch-conn {
+  display: flex; align-items: center; gap: 9px; flex-shrink: 0;
+  padding: 8px var(--s4);
+  background: var(--warning-bg);
+  border-bottom: 1px solid rgba(245, 158, 11, .25);
+  font-size: 0.75rem; color: var(--warning);
+}
+.ch-conn.failed {
+  background: var(--danger-bg);
+  border-bottom-color: rgba(190, 18, 60, .25);
+  color: var(--danger);
+}
+.ch-conn-text { flex: 1; min-width: 0; line-height: 1.5; }
+.ch-conn-retry {
+  display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0;
+  height: 26px; padding: 0 10px; border-radius: var(--r-sm);
+  border: 1px solid currentColor; color: inherit;
+  font-size: 0.6875rem; font-weight: 700;
+}
+.ch-conn-retry:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+
+/* A thread nobody has written in yet — invitation, not absence. */
+.ch-item-new { color: var(--accent-text); font-style: italic; }
+
+/* ── Waiting state (PENDING + no history) ─────────────────────────────────
+   The card background is pinned to the values the spec requires —
+   rgb(16,22,31) dark, rgb(255,255,255) light. Light matches --surface exactly;
+   dark --surface is #11141B (17,20,27), a few units off, so the card carries
+   its own variable rather than shifting every card in the product to match. */
+.ch-wait {
+  flex: 1; min-height: 0;
+  display: grid; place-items: center;
+  padding: var(--s6) var(--s5);
+  --ch-wait-bg: rgb(16, 22, 31);
+}
+[data-theme='light'] .ch-wait { --ch-wait-bg: rgb(255, 255, 255); }
+
+.ch-wait-card {
+  display: flex; flex-direction: column; align-items: center; gap: var(--s3);
+  padding: var(--s6) var(--s7);
+  max-width: 340px; text-align: center;
+  background: var(--ch-wait-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+}
+
+/* Ring + three dots. The ring rotates, the dots pulse in sequence — enough
+   motion to read as "working" without the jitter of a spinner at this size. */
+.ch-wait-ring {
+  width: 54px; height: 54px; border-radius: 50%;
+  display: grid; place-items: center;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  animation: ch-wait-spin 900ms linear infinite;
+}
+@keyframes ch-wait-spin { to { transform: rotate(360deg); } }
+
+.ch-wait-dots { display: flex; gap: 4px; animation: ch-wait-unspin 900ms linear infinite; }
+@keyframes ch-wait-unspin { to { transform: rotate(-360deg); } }
+.ch-wait-dots i {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent);
+  animation: ch-wait-pulse 1.2s ease-in-out infinite;
+}
+.ch-wait-dots i:nth-child(2) { animation-delay: .15s; }
+.ch-wait-dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes ch-wait-pulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+
+.ch-wait-label { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+.ch-wait-sub { font-size: 0.75rem; color: var(--text-dim); line-height: 1.6; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-wait-ring, .ch-wait-dots, .ch-wait-dots i { animation: none; }
+  .ch-wait-ring { border-top-color: var(--accent); }
+}
+
+/* ── Thread cover (PENDING + history) ─────────────────────────────────────
+   Messages stay mounted so scroll position and paging survive the reconnect,
+   but are not readable while the connection is unusable — a thread that may be
+   stale should not look current. */
+.ch-body.covered { filter: blur(3px); user-select: none; }
+.ch-cover {
+  position: absolute; inset: 0; z-index: 4;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(2px);
+  /* Swallows clicks so nothing beneath can be opened or replied to. */
+  pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) { .ch-body.covered { filter: none; } }

@@ -1,0 +1,72 @@
+/* ── Roles & access ─────────────────────────────────────────────────────── */
+.ra-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s5); margin-bottom: var(--s5); align-items: start; }
+
+.ra-fields { padding: var(--s5); display: grid; gap: var(--s3); }
+.ra-fields .fl { margin-bottom: 0; }
+
+/* Current → new, shown side by side so the change is unmistakable. */
+.ra-change {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--s3);
+  align-items: center; padding: var(--s4);
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--r);
+}
+.ra-change-cell { text-align: center; min-width: 0; }
+.ra-change-lbl {
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-faint); margin-bottom: 5px;
+}
+.ra-arrow { color: var(--text-faint); }
+
+.ra-picked {
+  display: flex; align-items: center; gap: 10px;
+  padding: var(--s3); border-radius: var(--r);
+  background: var(--accent-soft); border: 1px solid var(--accent-line);
+}
+
+/* ── Role reference ── */
+.ra-role {
+  padding: var(--s4); border-bottom: 1px solid var(--line);
+}
+.ra-role:last-child { border-bottom: none; }
+.ra-role-head { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
+.ra-perms { display: flex; flex-wrap: wrap; gap: 4px; margin-top: var(--s3); }
+.ra-perm {
+  display: inline-flex; align-items: center;
+  padding: 2px 8px; border-radius: var(--r-full);
+  background: var(--raised); border: 1px solid var(--line);
+  font-size: 0.625rem; font-weight: 600; color: var(--text-mid);
+  white-space: nowrap;
+}
+.ra-perm.on { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-text); }
+
+/* ── Permission editor ── */
+.ra-perm-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 6px; padding: var(--s5);
+}
+.ra-perm-box {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 11px; border-radius: var(--r);
+  background: var(--raised); border: 1px solid var(--line);
+  font-size: 0.75rem; font-weight: 600; cursor: pointer;
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+.ra-perm-box:hover { border-color: var(--line-strong); }
+.ra-perm-box.on { background: var(--accent-soft); border-color: var(--accent-line); }
+.ra-perm-box input { accent-color: var(--accent); width: 14px; height: 14px; cursor: pointer; }
+
+/* ── Employee table ── */
+.ra-emp-perms { display: flex; flex-wrap: wrap; gap: 3px; max-width: 320px; }
+
+.ra-cards { display: none; }
+@media (max-width: 900px) {
+  .ra-top { grid-template-columns: 1fr; }
+  .ra-table-wrap { display: none; }
+  .ra-cards { display: grid; gap: var(--s3); padding: var(--s3); }
+  .ra-card { padding: var(--s4); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); }
+  .ra-emp-perms { max-width: none; }
+}
+@media (max-width: 560px) {
+  .ra-change { grid-template-columns: 1fr; }
+  .ra-arrow { transform: rotate(90deg); justify-self: center; }
+}

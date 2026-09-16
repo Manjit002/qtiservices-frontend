@@ -1,0 +1,100 @@
+/* ── Order detail ───────────────────────────────────────────────────────────
+   Two columns on desktop: the record on the left, the controls on the right.
+   The control rail is sticky so the Action Center stays reachable no matter
+   how far down the payment history the admin has scrolled. */
+
+.od-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: var(--s5); flex-wrap: wrap; margin-bottom: var(--s5);
+}
+.od-title { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.od-id { font-size: 1.375rem; font-weight: 600; letter-spacing: -0.02em; }
+
+.od-cols { display: grid; grid-template-columns: minmax(0, 1fr) 336px; gap: var(--s5); align-items: start; }
+.od-main, .od-rail { display: grid; gap: var(--s5); min-width: 0; }
+.od-rail { position: sticky; top: calc(var(--topbar-h) + var(--s5)); }
+
+/* ── Timeline ── */
+.od-steps { display: flex; align-items: flex-start; gap: 0; padding: var(--s5); overflow-x: auto; }
+.od-step { display: flex; flex-direction: column; align-items: center; gap: 7px; min-width: 78px; flex-shrink: 0; }
+.od-step-dot {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--raised); border: 1px solid var(--line-strong);
+  color: var(--text-faint); font-size: 0.6875rem; font-weight: 700;
+}
+.od-step.done .od-step-dot { background: var(--success-bg); border-color: var(--success); color: var(--success); }
+.od-step.now .od-step-dot {
+  background: var(--accent); border-color: var(--accent); color: #06080D;
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+[data-theme='light'] .od-step.now .od-step-dot { color: #fff; }
+.od-step-label { font-size: 0.6875rem; color: var(--text-faint); text-align: center; }
+.od-step.done .od-step-label { color: var(--text-mid); }
+.od-step.now .od-step-label { color: var(--text); font-weight: 600; }
+.od-step-line { flex: 1; height: 2px; min-width: 14px; margin-top: 12px; background: var(--line); border-radius: 2px; }
+.od-step-line.done { background: var(--success); }
+
+/* ── Field grid ── */
+.od-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); padding: var(--s5); }
+.od-field { min-width: 0; }
+.od-field-lbl {
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--text-faint); margin-bottom: 3px;
+}
+.od-field-val { font-size: 0.8125rem; word-break: break-word; }
+.od-field-val.empty { color: var(--text-faint); font-style: italic; }
+
+/* ── Money ── */
+.od-money { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s3); padding: var(--s5); }
+.od-money-cell { padding: var(--s3); background: var(--raised); border-radius: var(--r); border: 1px solid var(--line); }
+.od-money-lbl { font-size: 0.6875rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint); }
+.od-money-val { font-size: 1.125rem; font-weight: 600; letter-spacing: -0.02em; margin-top: 3px; }
+
+/* ── Person ── */
+.od-person { display: flex; align-items: center; gap: var(--s3); padding: var(--s5) var(--s5) var(--s3); }
+
+/* ── Action Center ──────────────────────────────────────────────────────────
+   Grouped by intent, not laid out as one undifferentiated row of buttons. */
+.od-acts { padding: var(--s4) var(--s5) var(--s5); display: grid; gap: var(--s4); }
+.od-act-group { display: grid; gap: 6px; }
+.od-act-title {
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--text-faint);
+}
+.od-act-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.od-act-row.single { grid-template-columns: 1fr; }
+.od-act {
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 32px; padding: 0 10px;
+  border-radius: var(--r); border: 1px solid var(--line-strong);
+  background: var(--raised); color: var(--text-mid);
+  font-size: 0.75rem; font-weight: 600; white-space: nowrap;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease);
+}
+.od-act:hover { background: var(--overlay); color: var(--text); border-color: var(--accent-line); }
+.od-act:disabled { opacity: .4; pointer-events: none; }
+.od-act.primary { background: var(--accent); border-color: var(--accent); color: #06080D; }
+.od-act.primary:hover { filter: brightness(1.1); color: #06080D; }
+[data-theme='light'] .od-act.primary { color: #fff; }
+.od-act.danger { color: var(--danger); border-color: rgba(190, 18, 60, .28); }
+.od-act.danger:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+
+.od-danger-zone { border-top: 1px solid var(--line); padding-top: var(--s4); }
+
+/* ── Instructions ── */
+.od-instructions {
+  padding: var(--s5); font-size: 0.8125rem; line-height: 1.75;
+  white-space: pre-wrap; word-break: break-word;
+}
+
+@media (max-width: 1180px) {
+  .od-cols { grid-template-columns: 1fr; }
+  .od-rail { position: static; }
+}
+@media (max-width: 620px) {
+  .od-fields, .od-money { grid-template-columns: 1fr; }
+  .od-act-row { grid-template-columns: 1fr; }
+  .od-head { flex-direction: column; }
+}

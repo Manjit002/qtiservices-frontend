@@ -1,0 +1,65 @@
+/* ── Add expert ─────────────────────────────────────────────────────────── */
+.ax-cols { display: grid; grid-template-columns: 420px minmax(0, 1fr); gap: var(--s5); align-items: start; }
+.ax-form-card { position: sticky; top: calc(var(--topbar-h) + var(--s5)); }
+
+.ax-fields { padding: var(--s5); display: grid; gap: var(--s3); }
+.ax-fields .fl { margin-bottom: 0; }
+.ax-req { color: var(--danger); margin-left: 2px; }
+
+.ax-pw { position: relative; }
+.ax-pw .fi { padding-right: 38px; }
+.ax-pw-eye {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 26px; height: 26px; border-radius: var(--r-sm);
+  display: grid; place-items: center; color: var(--text-faint);
+}
+.ax-pw-eye:hover { color: var(--text); background: var(--overlay); }
+
+/* Strength is advisory only — the backend rule is the 6-char minimum. */
+.ax-meter { display: flex; gap: 3px; margin-top: 6px; }
+.ax-meter span { flex: 1; height: 3px; border-radius: 2px; background: var(--line); transition: background var(--base) var(--ease); }
+
+/* ── Employee list ── */
+.ax-emp {
+  display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s3) var(--s5);
+  border-bottom: 1px solid var(--line);
+  transition: background var(--fast) var(--ease);
+}
+.ax-emp:last-child { border-bottom: none; }
+.ax-emp:hover { background: var(--raised); }
+.ax-emp-main { flex: 1; min-width: 0; }
+.ax-emp-side { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+/* Availability dot pairs with a text badge — never colour alone. */
+.ax-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.ax-dot.available { background: var(--success); }
+.ax-dot.busy { background: var(--warning); }
+.ax-dot.offline { background: var(--text-faint); }
+
+/* Highlights the row for a just-created account so it is findable in a long list. */
+.ax-emp.fresh { background: var(--accent-soft); }
+
+@media (max-width: 1000px) {
+  .ax-cols { grid-template-columns: 1fr; }
+  .ax-form-card { position: static; }
+}
+@media (max-width: 560px) {
+  .ax-emp { flex-wrap: wrap; }
+  .ax-emp-side { width: 100%; padding-left: 40px; }
+}
+
+/* ── Experts table → cards ──────────────────────────────────────────────── */
+.ax-emp-card {
+  padding: var(--s4); background: var(--surface);
+  border: 1px solid var(--line); border-radius: var(--r-md);
+}
+.ax-emp-card + .ax-emp-card { margin-top: var(--s3); }
+
+@media (max-width: 900px) {
+  .ax-table-wrap { display: none; }
+  .ax-cards { display: block; }
+}
+@media (min-width: 901px) {
+  .ax-cards { display: none; }
+}

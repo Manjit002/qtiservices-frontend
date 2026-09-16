@@ -1,0 +1,77 @@
+/* ── Student 360 ────────────────────────────────────────────────────────── */
+.stu-search { display: flex; gap: var(--s2); flex-wrap: wrap; align-items: flex-start; }
+.stu-search-field { position: relative; flex: 1; min-width: 240px; max-width: 460px; }
+.stu-search-field svg { position: absolute; left: 11px; top: 13px; color: var(--text-faint); }
+.stu-search-field .input { height: 40px; padding-left: 34px; }
+
+/* ── Profile header ── */
+.stu-hero { display: flex; align-items: flex-start; gap: var(--s4); padding: var(--s5); flex-wrap: wrap; }
+.stu-avatar {
+  width: 56px; height: 56px; flex-shrink: 0; border-radius: var(--r-md);
+  display: grid; place-items: center;
+  background: var(--accent-soft); color: var(--accent-text);
+  font-size: 1.375rem; font-weight: 700;
+}
+.stu-ident { flex: 1; min-width: 200px; }
+.stu-chips { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; margin-top: 7px; }
+.stu-wallet {
+  text-align: right; padding: var(--s3) var(--s4);
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--r);
+  min-width: 140px;
+}
+.stu-wallet-val { font-size: 1.375rem; font-weight: 600; letter-spacing: -0.02em; }
+
+/* ── Summary + detail grids ── */
+.stu-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s3); }
+.stu-stat {
+  position: relative; overflow: hidden;
+  padding: var(--s4) var(--s4) var(--s4) var(--s5);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md);
+}
+.stu-stat-flag { position: absolute; left: 0; top: 0; bottom: 0; width: 2px; }
+.stu-stat-val { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+.stu-stat-lbl { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; }
+
+.stu-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); padding: var(--s5); }
+
+/* ── Tabs ── */
+.stu-tabs {
+  display: flex; gap: 2px; padding: var(--s2);
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--r);
+  overflow-x: auto; margin-bottom: var(--s4);
+}
+.stu-tabs::-webkit-scrollbar { display: none; }
+.stu-tab {
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 32px; padding: 0 13px; border-radius: var(--r-sm);
+  font-size: 0.8125rem; font-weight: 600; color: var(--text-dim);
+  white-space: nowrap;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+.stu-tab:hover { color: var(--text); }
+.stu-tab.on { background: var(--surface); color: var(--text); box-shadow: var(--shadow-sm); }
+.stu-tab-count {
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: var(--r-full);
+  background: var(--overlay); color: var(--text-dim);
+  font-size: 0.6875rem; font-weight: 700; display: grid; place-items: center;
+}
+.stu-tab.on .stu-tab-count { background: var(--accent-soft); color: var(--accent-text); }
+
+/* ── Payments ── */
+.stu-pay-sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s3); padding: var(--s5); }
+.stu-pay-cell { padding: var(--s3); background: var(--raised); border: 1px solid var(--line); border-radius: var(--r); text-align: center; }
+.stu-pay-val { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
+.stu-pay-lbl { font-size: 0.6875rem; color: var(--text-dim); margin-top: 2px; }
+
+/* ── Action panels ── */
+.stu-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--s4); }
+
+@media (max-width: 900px) { .stu-fields { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) {
+  .stu-stats { grid-template-columns: repeat(2, 1fr); }
+  .stu-fields { grid-template-columns: 1fr; }
+  .stu-pay-sum { grid-template-columns: 1fr; }
+  .stu-wallet { width: 100%; text-align: left; }
+  .stu-search-field { max-width: none; }
+  .stu-search .btn { flex: 1; }
+}

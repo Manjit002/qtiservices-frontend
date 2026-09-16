@@ -1,0 +1,54 @@
+/* ── Deleted orders archive ─────────────────────────────────────────────── */
+
+/* An archive banner, not an alert — these records are expected, not a problem. */
+.da-note {
+  display: flex; gap: 9px; align-items: flex-start;
+  padding: 11px var(--s4); margin-bottom: var(--s5);
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--r);
+  font-size: 0.8125rem; line-height: 1.6; color: var(--text-mid);
+}
+
+.da-id { font-size: 0.8125rem; font-weight: 600; color: var(--accent-text); white-space: nowrap; }
+.da-reason { max-width: 240px; }
+.da-sub { font-size: 0.6875rem; color: var(--text-dim); margin-top: 1px; }
+
+/* ── Details drawer ── */
+.da-drawer-scrim {
+  position: fixed; inset: 0; z-index: 190;
+  background: color-mix(in srgb, var(--text) 45%, transparent);
+  backdrop-filter: blur(2px);
+  animation: fade var(--base) var(--ease);
+}
+.da-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 200;
+  width: min(440px, 100vw);
+  display: flex; flex-direction: column;
+  background: var(--surface); border-left: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-lg);
+  animation: slideIn var(--base) var(--ease);
+}
+@keyframes slideIn { from { transform: translateX(100%); } }
+.da-drawer-body { flex: 1; min-height: 0; overflow-y: auto; padding: var(--s5); }
+
+.da-field { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.da-field:last-child { border-bottom: none; }
+.da-field-lbl {
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--text-faint); margin-bottom: 3px;
+}
+.da-field-val { font-size: 0.8125rem; word-break: break-word; }
+.da-field-val.empty { color: var(--text-faint); font-style: italic; }
+
+/* ── Mobile cards ── */
+.da-cards { display: none; }
+@media (max-width: 900px) {
+  .da-table-wrap { display: none; }
+  .da-cards { display: grid; gap: var(--s3); padding: var(--s3); }
+  .da-card { padding: var(--s4); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); }
+  .da-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s3); }
+  .da-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); margin-top: var(--s3); }
+  .da-reason { max-width: none; }
+}
+@media (max-width: 620px) {
+  .da-drawer { width: 100vw; }
+}
