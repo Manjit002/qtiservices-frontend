@@ -1,0 +1,73 @@
+/* ── Assign orders ──────────────────────────────────────────────────────── */
+.as-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: var(--s3); margin-bottom: var(--s5); }
+.as-stat {
+  position: relative; overflow: hidden;
+  padding: var(--s4) var(--s4) var(--s4) var(--s5);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md);
+  transition: transform var(--base) var(--ease), border-color var(--fast) var(--ease);
+}
+.as-stat:hover { transform: translateY(-2px); border-color: var(--line-strong); }
+.as-stat-flag { position: absolute; left: 0; top: 0; bottom: 0; width: 2px; }
+.as-stat-head { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--text-dim); }
+.as-stat-val { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; margin-top: 5px; }
+.as-stat-sub { font-size: 0.6875rem; color: var(--text-faint); margin-top: 2px; }
+
+.as-id { font-size: 0.8125rem; font-weight: 600; color: var(--accent-text); }
+.as-sub { font-size: 0.6875rem; color: var(--text-dim); margin-top: 1px; }
+
+/* Rows enter with a short stagger — enough to read as motion, not a show. */
+@keyframes rowIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.as-row-anim { animation: rowIn 260ms var(--ease) both; }
+
+/* ── Expert picker ── */
+.ep-search { position: relative; margin-bottom: var(--s3); }
+.ep-search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-faint); }
+.ep-search .fi { padding-left: 32px; padding-right: 30px; }
+.ep-search .clear {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 22px; height: 22px; border-radius: var(--r-sm);
+  display: grid; place-items: center; color: var(--text-faint);
+}
+.ep-search .clear:hover { color: var(--text); background: var(--overlay); }
+
+.ep-list { max-height: 260px; overflow-y: auto; display: grid; gap: 5px; padding: 2px; }
+
+.ep-item {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  padding: 9px 11px; border-radius: var(--r); text-align: left;
+  background: var(--raised); border: 1px solid var(--line);
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+.ep-item:hover { border-color: var(--line-strong); }
+.ep-item.on { background: var(--accent-soft); border-color: var(--accent); }
+/* Keyboard cursor is distinct from selection, so arrowing never looks like choosing. */
+.ep-item.cursor { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.ep-radio {
+  width: 16px; height: 16px; flex-shrink: 0; border-radius: 50%;
+  border: 2px solid var(--line-strong); display: grid; place-items: center;
+}
+.ep-item.on .ep-radio { border-color: var(--accent); }
+.ep-item.on .ep-radio::after {
+  content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+}
+.ep-main { flex: 1; min-width: 0; }
+.ep-name { font-size: 0.8125rem; font-weight: 600; }
+.ep-meta { font-size: 0.6875rem; color: var(--text-dim); }
+.ep-load { font-size: 0.6875rem; color: var(--text-faint); flex-shrink: 0; text-align: right; }
+
+.as-picked {
+  display: flex; align-items: center; gap: 10px;
+  padding: var(--s3); margin-bottom: var(--s4);
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--r);
+}
+
+.as-cards { display: none; }
+@media (max-width: 900px) {
+  .as-table-wrap { display: none; }
+  .as-cards { display: grid; gap: var(--s3); padding: var(--s3); }
+  .as-card { padding: var(--s4); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); }
+  .as-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s3); }
+  .as-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); margin-top: var(--s3); }
+}
+@media (max-width: 560px) { .as-stats { grid-template-columns: repeat(2, 1fr); } }

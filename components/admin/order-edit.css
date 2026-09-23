@@ -1,0 +1,41 @@
+/* ── Edit order dialog ──────────────────────────────────────────────────── */
+.oe-title { display: flex; flex-direction: column; gap: 2px; }
+.oe-title-sub { font-size: 0.75rem; font-weight: 400; color: var(--text-dim); }
+
+.oe-meta {
+  display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap;
+  padding-bottom: var(--s4); margin-bottom: var(--s4);
+  border-bottom: 1px solid var(--line);
+}
+
+.oe-section + .oe-section {
+  margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line);
+}
+.oe-section-title {
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--text-faint); margin-bottom: var(--s3);
+}
+
+.oe-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3) var(--s4); }
+.oe-grid .fl { margin-bottom: 0; }
+.oe-textarea { height: auto; padding: 10px 12px; resize: vertical; line-height: 1.6; }
+
+.oe-note {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 9px 11px; margin-top: var(--s3);
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--r);
+  font-size: 0.75rem; line-height: 1.6; color: var(--text-mid);
+}
+.oe-note.warn {
+  background: var(--warning-bg); border-color: rgba(245, 158, 11, .28); color: var(--warning);
+}
+
+/* Footer keeps the change count on the left and the actions on the right, and
+   stays pinned while the body scrolls — the buttons must never be unreachable
+   on a short viewport. */
+.oe-foot-state { margin-right: auto; font-size: 0.75rem; color: var(--text-dim); }
+
+@media (max-width: 620px) {
+  .oe-grid { grid-template-columns: 1fr; }
+  .oe-foot-state { display: none; }
+}

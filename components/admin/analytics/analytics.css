@@ -1,0 +1,92 @@
+/* ── Analytics ──────────────────────────────────────────────────────────── */
+.an-bar {
+  display: flex; align-items: center; gap: var(--s3);
+  flex-wrap: wrap; margin-bottom: var(--s5);
+}
+
+.an-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(172px, 1fr)); gap: var(--s3); margin-bottom: var(--s5); }
+.an-kpi {
+  position: relative; overflow: hidden;
+  padding: var(--s4) var(--s4) var(--s4) var(--s5);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md);
+  transition: transform var(--base) var(--ease), border-color var(--fast) var(--ease);
+}
+.an-kpi:hover { transform: translateY(-2px); border-color: var(--line-strong); }
+.an-kpi-flag { position: absolute; left: 0; top: 0; bottom: 0; width: 2px; }
+.an-kpi-head { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--text-dim); }
+.an-kpi-val { font-size: 1.625rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; margin-top: 5px; }
+.an-kpi-sub { font-size: 0.6875rem; color: var(--text-faint); margin-top: 2px; }
+
+.an-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s5); align-items: start; }
+.an-grid { display: grid; gap: var(--s5); }
+
+/* ── Chart shell ── */
+.ch-wrap { position: relative; padding: var(--s4) var(--s5) 0; }
+.ch-svg { width: 100%; height: calc(100% - 20px); display: block; overflow: visible; }
+
+/* Entrance: the line draws in, the fill follows. Runs once, ~600ms. */
+@keyframes drawLine { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
+.ch-line { stroke-dasharray: 1400; animation: drawLine 700ms var(--ease) forwards; }
+@keyframes fadeArea { from { opacity: 0; } to { opacity: 1; } }
+.ch-area { animation: fadeArea 700ms var(--ease) 200ms both; }
+
+.ch-tip {
+  position: absolute; z-index: 5; pointer-events: none;
+  transform: translate(-50%, calc(-100% - 12px));
+  padding: 6px 9px; border-radius: var(--r);
+  background: var(--overlay); border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow); white-space: nowrap;
+}
+.ch-tip-v { font-size: 0.8125rem; font-weight: 600; }
+.ch-tip-l { font-size: 0.6875rem; color: var(--text-dim); }
+
+.ch-xaxis {
+  display: flex; justify-content: space-between;
+  padding: 0 var(--s5) var(--s3); margin-top: -6px;
+}
+.ch-xtick {
+  font-size: 0.625rem; color: var(--text-faint);
+  flex: 1; text-align: center; overflow: hidden; white-space: nowrap;
+}
+
+/* ── Donut ── */
+.dn-wrap { display: flex; align-items: center; gap: var(--s5); padding: var(--s5); flex-wrap: wrap; }
+.dn-chart { position: relative; width: 160px; height: 160px; flex-shrink: 0; }
+.dn-chart svg { width: 100%; height: 100%; }
+.dn-slice { transition: stroke-dasharray 600ms var(--ease); }
+.dn-center {
+  position: absolute; inset: 0; display: grid; place-content: center; text-align: center;
+  pointer-events: none;
+}
+.dn-total { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.03em; }
+.dn-label { font-size: 0.6875rem; color: var(--text-dim); }
+
+.dn-legend { list-style: none; flex: 1; min-width: 190px; display: grid; gap: 7px; }
+.dn-legend li { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; }
+.dn-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+.dn-name { flex: 1; min-width: 0; color: var(--text-mid); }
+.dn-val { font-weight: 600; font-variant-numeric: tabular-nums; }
+.dn-pct { color: var(--text-faint); width: 34px; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ── Bar list ── */
+.bl { padding: var(--s5); display: grid; gap: var(--s3); }
+.bl-row { display: grid; grid-template-columns: 130px 1fr 56px; gap: var(--s3); align-items: center; }
+.bl-label { font-size: 0.75rem; color: var(--text-mid); }
+.bl-track { height: 8px; border-radius: 4px; background: var(--raised); overflow: hidden; }
+.bl-fill { display: block; height: 100%; border-radius: 4px; transition: width 600ms var(--ease); }
+.bl-val { font-size: 0.8125rem; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.bl-meta { grid-column: 2 / -1; font-size: 0.625rem; color: var(--text-faint); margin-top: -4px; }
+
+/* A caveat sits with the number it qualifies, not in a footnote. */
+.an-note {
+  display: flex; gap: 7px; align-items: flex-start;
+  padding: 9px var(--s5); border-top: 1px solid var(--line);
+  font-size: 0.6875rem; line-height: 1.55; color: var(--text-faint);
+}
+
+@media (max-width: 1000px) { .an-2 { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  .an-kpis { grid-template-columns: repeat(2, 1fr); }
+  .bl-row { grid-template-columns: 92px 1fr 48px; }
+  .dn-wrap { justify-content: center; }
+}

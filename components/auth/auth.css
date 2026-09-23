@@ -1,0 +1,71 @@
+/* ── Authentication ─────────────────────────────────────────────────────────
+   Split screen on desktop: a narrative left panel, a working right panel.
+   Below 900px the left panel drops entirely — on a phone the only job is
+   signing in, and marketing copy is in the way. */
+
+.auth { min-height: 100dvh; display: grid; grid-template-columns: 1.05fr 1fr; }
+
+.auth-brand {
+  position: relative; overflow: hidden;
+  padding: var(--s10) var(--s12);
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+}
+
+/* Ambient wash, deliberately low-contrast — atmosphere, not decoration. */
+.auth-brand::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(700px 420px at 12% 8%, var(--accent-soft), transparent 68%),
+    radial-gradient(520px 340px at 88% 92%, rgba(240, 165, 0, 0.05), transparent 70%);
+}
+.auth-brand > * { position: relative; z-index: 1; }
+
+/* A hairline grid — the plainest possible reference to a scheduling system. */
+.auth-grid {
+  position: absolute; inset: 0; z-index: 0; opacity: 0.5;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(circle at 30% 30%, #000 10%, transparent 72%);
+}
+
+.auth-claim { margin-top: auto; max-width: 460px; }
+.auth-points { margin-top: var(--s8); display: flex; flex-direction: column; gap: var(--s4); }
+.auth-point { display: flex; gap: var(--s3); align-items: flex-start; }
+.auth-point-icon {
+  width: 30px; height: 30px; flex-shrink: 0; border-radius: var(--r);
+  background: var(--raised); border: 1px solid var(--line);
+  display: grid; place-items: center; color: var(--accent);
+}
+
+.auth-form { position: relative; display: flex; align-items: center; justify-content: center; padding: var(--s8) var(--s6); }
+.auth-card { width: 100%; max-width: 366px; }
+
+.auth-alert {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 10px var(--s3); border-radius: var(--r);
+  font-size: 0.8125rem; line-height: 1.5;
+}
+.auth-alert.err { background: var(--danger-bg); color: var(--danger); }
+.auth-alert.ok  { background: var(--success-bg); color: var(--success); }
+
+.pw-toggle {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 26px; height: 26px; border-radius: var(--r-sm);
+  display: grid; place-items: center; color: var(--text-faint);
+}
+.pw-toggle:hover { color: var(--text); background: var(--overlay); }
+
+.auth-foot {
+  display: flex; align-items: center; justify-content: center; gap: var(--s4);
+  margin-top: var(--s6); color: var(--text-faint); font-size: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .auth { grid-template-columns: 1fr; }
+  .auth-brand { display: none; }
+  .auth-form { padding: var(--s6) var(--s4); align-items: flex-start; padding-top: var(--s12); }
+}

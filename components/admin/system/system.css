@@ -1,0 +1,83 @@
+/* ── System overview ────────────────────────────────────────────────────── */
+.sy-grid { display: grid; gap: var(--s5); }
+.sy-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s5); align-items: start; }
+
+.sy-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--s3); }
+.sy-kpi {
+  position: relative; overflow: hidden;
+  padding: var(--s4) var(--s4) var(--s4) var(--s5);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md);
+  text-align: left; width: 100%;
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+.sy-kpi:hover { border-color: var(--line-strong); background: var(--raised); }
+.sy-kpi-flag { position: absolute; left: 0; top: 0; bottom: 0; width: 2px; }
+.sy-kpi-head { display: flex; align-items: center; gap: 6px; color: var(--text-dim); font-size: 0.75rem; }
+.sy-kpi-val { font-size: 1.625rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; margin-top: 5px; }
+.sy-kpi-sub { font-size: 0.6875rem; color: var(--text-faint); margin-top: 2px; }
+
+/* ── Status distribution ── */
+.sy-dist { padding: var(--s5); display: grid; gap: var(--s3); }
+.sy-bar-row { display: grid; grid-template-columns: 150px 1fr 60px; gap: var(--s3); align-items: center; }
+.sy-bar { height: 8px; border-radius: 4px; background: var(--raised); overflow: hidden; }
+.sy-bar-fill { height: 100%; border-radius: 4px; transition: width var(--slow) var(--ease); }
+.sy-bar-n { text-align: right; font-size: 0.8125rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ── Money rows ── */
+.sy-money { display: grid; gap: 1px; background: var(--line); }
+.sy-money-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--s3);
+  padding: var(--s3) var(--s5); background: var(--surface);
+}
+.sy-money-lbl { font-size: 0.8125rem; color: var(--text-mid); display: flex; align-items: center; gap: 7px; }
+.sy-money-val { font-size: 0.9375rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ── Attention list ── */
+.sy-att {
+  width: 100%; display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s3) var(--s5); text-align: left;
+  border-bottom: 1px solid var(--line);
+  transition: background var(--fast) var(--ease);
+}
+.sy-att:last-child { border-bottom: none; }
+.sy-att:hover { background: var(--raised); }
+.sy-att-icon {
+  width: 30px; height: 30px; flex-shrink: 0; border-radius: var(--r);
+  display: grid; place-items: center;
+}
+.sy-att-main { flex: 1; min-width: 0; }
+.sy-att-n { font-size: 1rem; font-weight: 700; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+
+/* ── Quick actions ── */
+.sy-qa { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--s2); padding: var(--s5); }
+.sy-qa-btn {
+  display: flex; align-items: center; gap: 9px;
+  padding: 11px 13px; border-radius: var(--r);
+  background: var(--raised); border: 1px solid var(--line);
+  font-size: 0.8125rem; font-weight: 600; color: var(--text-mid);
+  transition: all var(--fast) var(--ease);
+}
+.sy-qa-btn:hover { background: var(--overlay); color: var(--text); border-color: var(--accent-line); }
+
+/* ── Recent ── */
+.sy-recent {
+  display: flex; align-items: center; gap: var(--s3);
+  width: 100%; padding: 10px var(--s5); text-align: left;
+  border-bottom: 1px solid var(--line);
+  transition: background var(--fast) var(--ease);
+}
+.sy-recent:last-child { border-bottom: none; }
+.sy-recent:hover { background: var(--raised); }
+
+/* Explains a derived or sampled figure inline, where it is being read. */
+.sy-caveat {
+  display: flex; gap: 7px; align-items: flex-start;
+  padding: 9px var(--s5); font-size: 0.6875rem; line-height: 1.55;
+  color: var(--text-faint); border-top: 1px solid var(--line);
+}
+
+@media (max-width: 1000px) { .sy-2 { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  .sy-bar-row { grid-template-columns: 110px 1fr 46px; }
+  .sy-kpis { grid-template-columns: repeat(2, 1fr); }
+}

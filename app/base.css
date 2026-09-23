@@ -1,0 +1,482 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   Base layer — reset, typography scale, and the primitives' styles.
+   Everything here is unscoped and intentional. The legacy portal stylesheets
+   remain scoped under .shell[data-portal=…] so not-yet-rebuilt panels keep
+   working during the transition; nothing in this file can reach them.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Every digit in this product is data. Tabular figures stop numbers from
+     jittering as they update, which matters on a live dashboard. */
+  font-variant-numeric: tabular-nums;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+input, textarea, select { font: inherit; color: inherit; }
+svg { display: block; flex-shrink: 0; }
+
+/* Keyboard focus is visible everywhere; pointer focus is not. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+:focus:not(:focus-visible) { outline: none; }
+
+::selection { background: var(--accent-soft); color: var(--text); }
+
+/* ── Type scale ─────────────────────────────────────────────────────────────
+   Six steps. Display is reserved for the homepage hero; the app never uses it. */
+.t-display { font-size: clamp(2.75rem, 6vw, 4.5rem); line-height: 1.02; letter-spacing: -0.035em; font-weight: 600; }
+.t-h1      { font-size: clamp(1.75rem, 3vw, 2.25rem); line-height: 1.14; letter-spacing: -0.025em; font-weight: 600; }
+.t-h2      { font-size: 1.25rem;  line-height: 1.3;  letter-spacing: -0.018em; font-weight: 600; }
+.t-h3      { font-size: 0.9375rem; line-height: 1.4; letter-spacing: -0.01em;  font-weight: 600; }
+.t-body    { font-size: 0.875rem; line-height: 1.6; }
+.t-sm      { font-size: 0.8125rem; line-height: 1.5; }
+.t-xs      { font-size: 0.75rem;  line-height: 1.45; }
+
+/* Eyebrow: the only place we use uppercase tracking. Used to label a region,
+   never to shout. */
+.t-eyebrow {
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--text-dim);
+}
+
+/* The wordmark is the ONLY place the display face appears. */
+.wordmark {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.375rem; letter-spacing: 0.04em; line-height: 1;
+  display: inline-flex; align-items: baseline; gap: 1px;
+}
+.wordmark em { font-style: normal; color: var(--gold); }
+
+.text-mid   { color: var(--text-mid); }
+.text-dim   { color: var(--text-dim); }
+.text-faint { color: var(--text-faint); }
+
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
+/* ── Surfaces ─────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+.card-pad { padding: var(--s5); }
+.card-head {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s3);
+  padding: var(--s4) var(--s5);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+  height: 34px; padding: 0 var(--s3);
+  border-radius: var(--r);
+  font-size: 0.8125rem; font-weight: 600;
+  white-space: nowrap;
+  transition: background var(--fast) var(--ease), border-color var(--fast) var(--ease),
+              color var(--fast) var(--ease), opacity var(--fast) var(--ease);
+}
+.btn:disabled { opacity: 0.45; pointer-events: none; }
+
+.btn-primary { background: var(--accent); color: #06080D; font-weight: 600; }
+.btn-primary:hover { filter: brightness(1.1); }
+
+.btn-secondary { background: var(--raised); color: var(--text); border: 1px solid var(--line-strong); }
+.btn-secondary:hover { background: var(--overlay); border-color: var(--accent-line); }
+
+.btn-ghost { color: var(--text-mid); }
+.btn-ghost:hover { background: var(--raised); color: var(--text); }
+
+.btn-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(244,63,94,.3); }
+.btn-danger:hover { background: rgba(244, 63, 94, 0.18); }
+
+.btn-sm { height: 28px; padding: 0 var(--s2); font-size: 0.75rem; }
+.btn-lg { height: 42px; padding: 0 var(--s5); font-size: 0.875rem; }
+.btn-icon { width: 34px; padding: 0; }
+.btn-icon.btn-sm { width: 28px; }
+
+/* ── Inputs ───────────────────────────────────────────────────────────────── */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 0.75rem; font-weight: 600; color: var(--text-mid); }
+
+.input {
+  width: 100%; height: 36px; padding: 0 var(--s3);
+  background: var(--raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r);
+  font-size: 0.8125rem;
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+.input::placeholder { color: var(--text-faint); }
+.input:focus { outline: none; border-color: var(--accent); background: var(--overlay); }
+.input.invalid { border-color: var(--danger); }
+textarea.input { height: auto; padding: var(--s2) var(--s3); resize: vertical; }
+select.input { cursor: pointer; }
+
+.input-icon { position: relative; }
+.input-icon svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-faint); }
+.input-icon .input { padding-left: 32px; }
+
+.field-error { font-size: 0.75rem; color: var(--danger); }
+
+/* ── Badges ───────────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 21px; padding: 0 8px;
+  border-radius: var(--r-sm);
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.badge-success { background: var(--success-bg); color: var(--success); }
+.badge-warning { background: var(--warning-bg); color: var(--warning); }
+.badge-danger  { background: var(--danger-bg);  color: var(--danger); }
+.badge-info    { background: var(--info-bg);    color: var(--info); }
+.badge-neutral { background: var(--neutral-bg); color: var(--text-mid); }
+.badge-accent  { background: var(--accent-soft); color: var(--accent-text); }
+
+.dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+/* ── Deadline meter — the signature element ─────────────────────────────────
+   A 2px rail encoding time remaining against the order's own window. It is
+   information, not decoration: the same rail appears on order rows, the
+   deadline centre and KPI tiles, so urgency reads identically everywhere. */
+.meter { height: 2px; border-radius: 2px; background: var(--line); overflow: hidden; }
+.meter-fill { height: 100%; border-radius: 2px; transition: width var(--slow) var(--ease); }
+
+/* ── Skeletons ────────────────────────────────────────────────────────────── */
+.skel {
+  background: linear-gradient(90deg, var(--raised) 25%, var(--overlay) 50%, var(--raised) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: var(--r-sm);
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ── Tables ───────────────────────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; }
+table.data { width: 100%; border-collapse: collapse; }
+table.data thead th {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--surface);
+  padding: var(--s2) var(--s4);
+  text-align: left;
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+table.data tbody td { padding: var(--s3) var(--s4); border-bottom: 1px solid var(--line); vertical-align: middle; }
+table.data tbody tr:last-child td { border-bottom: none; }
+table.data tbody tr { transition: background var(--fast) var(--ease); }
+table.data tbody tr:hover { background: var(--raised); }
+th.sortable { cursor: pointer; user-select: none; }
+th.sortable:hover { color: var(--text); }
+
+/* Row actions stay hidden until hover on pointer devices — keeps dense tables
+   calm — but are always present for touch and keyboard. */
+
+/* ── Scrollbars ───────────────────────────────────────────────────────────── */
+.scroll-y { overflow-y: auto; }
+.scroll-y::-webkit-scrollbar, .table-wrap::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-y::-webkit-scrollbar-track, .table-wrap::-webkit-scrollbar-track { background: transparent; }
+.scroll-y::-webkit-scrollbar-thumb, .table-wrap::-webkit-scrollbar-thumb {
+  background: var(--line-strong); border-radius: 4px;
+}
+.scroll-y::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.2); }
+
+/* ── Entrance ─────────────────────────────────────────────────────────────── */
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* `both` keeps the final keyframe applied after the run. The final frame is
+   `transform: none`, which does not create a containing block — but the
+   element does create one for the ~200ms the animation is mid-flight, and any
+   position:fixed descendant opened in that window is clipped to this panel
+   rather than the viewport.
+   Modals now portal to <body> so they are immune, but `forwards` is still the
+   honest fill-mode here: only the end state needs to persist, and it avoids
+   applying the `from` frame before the animation starts. */
+.rise { animation: rise var(--base) var(--ease) forwards; }
+
+/* Visually hidden but available to screen readers — used for table headers
+   whose visual label would be redundant. */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   Overlay layer — modals, toasts, palette, lightbox.
+
+   These render OUTSIDE any panel wrapper (at the end of the tree), so they can
+   never inherit the legacy theme and need first-class definitions here. The
+   legacy sheet also defines several of these names, but it is scoped under
+   `.legacy[…]`, so inside a legacy panel the old rule wins and everywhere else
+   these do — which is exactly the transition behaviour we want.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; justify-content: center;
+  /* start-aligned + scrollable, NOT align-items:center.
+     Centring a box taller than the viewport pushes its top above y=0, and with
+     no scroll on the overlay that region is unreachable — the dialog's header
+     is simply gone. Starting at the top keeps both edges reachable; `margin:
+     auto` on .modal (below) restores true centring whenever there is room. */
+  align-items: flex-start;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--s5);
+  background: color-mix(in srgb, var(--text) 55%, transparent); backdrop-filter: blur(6px);
+  animation: fade var(--base) var(--ease);
+}
+@keyframes fade { from { opacity: 0; } }
+
+.modal {
+  width: 100%;
+  max-height: 88vh;
+  /* dvh tracks the visual viewport, so mobile browser chrome cannot eat the
+     footer. Ignored by engines without dvh, which keep the vh line above. */
+  max-height: 88dvh;
+  /* Centres while there is free space; once the dialog is taller than the
+     overlay, auto margins collapse to zero and it scrolls from the top
+     instead of being clipped at both ends. */
+  margin: auto;
+  min-height: 0;
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  animation: rise var(--base) var(--ease);
+}
+.modal-head {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s3);
+  padding: var(--s4) var(--s5); border-bottom: 1px solid var(--line); flex-shrink: 0;
+}
+.modal-title { font-size: 0.9375rem; font-weight: 600; }
+.modal-close {
+  width: 28px; height: 28px; border-radius: var(--r-sm);
+  display: grid; place-items: center; color: var(--text-dim);
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+.modal-close:hover { background: var(--raised); color: var(--text); }
+/* `min-height: 0` is the load-bearing line. A flex item defaults to
+   min-height:auto and refuses to shrink below its content, so this pane grew
+   instead of scrolling, spilled past the modal's max-height and pushed the
+   header out of view — the cropped "Coupon code" field. Same trap as the chat
+   thread and the message list. */
+.modal-body {
+  padding: var(--s5);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+.modal-foot {
+  display: flex; justify-content: flex-end; gap: var(--s2);
+  padding: var(--s3) var(--s5); border-top: 1px solid var(--line); flex-shrink: 0;
+}
+
+/* ── Legacy form classes used inside the modals ── */
+.fl { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--s4); }
+.fl label { font-size: 0.75rem; font-weight: 600; color: var(--text-mid); }
+.fi {
+  width: 100%; height: 36px; padding: 0 var(--s3);
+  background: var(--raised); border: 1px solid var(--line-strong);
+  border-radius: var(--r); font-size: 0.8125rem;
+  transition: border-color var(--fast) var(--ease);
+}
+.fi:focus { outline: none; border-color: var(--accent); background: var(--overlay); }
+.fi::placeholder { color: var(--text-faint); }
+select.fi { cursor: pointer; }
+.fi-err { font-size: 0.75rem; color: var(--danger); }
+
+.alert {
+  display: block; padding: 10px var(--s3); margin-bottom: var(--s4);
+  border-radius: var(--r); font-size: 0.8125rem; line-height: 1.5;
+}
+.alert.error   { background: var(--danger-bg);  color: var(--danger); }
+.alert.success { background: var(--success-bg); color: var(--success); }
+
+/* `.detail-grid` belongs in the overlay layer with its siblings. It was the
+   one member of the set defined ONLY under `.legacy[data-portal="expert"]`,
+   which stopped matching the moment Modal began portalling to <body> — the
+   expert order-detail fields would have stacked in one column with no gap.
+   Its siblings were already here; this closes the set. */
+.detail-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3);
+  margin-bottom: var(--s4);
+}
+@media (max-width: 640px) { .detail-grid { grid-template-columns: 1fr; } }
+
+.detail-item {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--s4);
+  padding: 9px 0; border-bottom: 1px solid var(--line);
+}
+.detail-item:last-child { border-bottom: none; }
+.detail-lbl { font-size: 0.75rem; color: var(--text-dim); flex-shrink: 0; }
+.detail-val { font-size: 0.8125rem; text-align: right; min-width: 0; }
+
+.btn-copy, .btn-open-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 30px; padding: 0 var(--s3); border-radius: var(--r);
+  background: var(--raised); border: 1px solid var(--line-strong);
+  font-size: 0.75rem; font-weight: 600; color: var(--text);
+}
+.btn-copy:hover, .btn-open-link:hover { background: var(--overlay); border-color: var(--accent-line); }
+
+/* ── File grid (gallery modal) ── */
+.files-grid { display: grid; gap: var(--s3); grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); }
+.file-card {
+  padding: var(--s3); background: var(--raised);
+  border: 1px solid var(--line); border-radius: var(--r);
+  transition: border-color var(--fast) var(--ease);
+}
+.file-card:hover { border-color: var(--accent-line); }
+.fc-icon { font-size: 1.25rem; margin-bottom: var(--s2); }
+.fc-name { font-size: 0.75rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fc-meta { font-size: 0.6875rem; color: var(--text-dim); margin-top: 2px; }
+.fc-actions { display: flex; gap: 5px; margin-top: var(--s3); }
+.fc-btn {
+  flex: 1; height: 26px; border-radius: var(--r-sm);
+  background: var(--surface); border: 1px solid var(--line);
+  font-size: 0.6875rem; font-weight: 600; color: var(--text-mid);
+}
+.fc-btn:hover { color: var(--text); border-color: var(--line-strong); }
+
+.upload-prog-wrap { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.upload-prog-bar { height: 100%; background: var(--accent); transition: width var(--base) var(--ease); }
+
+/* ── Toasts ── */
+.toast-stack {
+  position: fixed; bottom: var(--s5); right: var(--s5); z-index: 300;
+  display: flex; flex-direction: column; gap: var(--s2); max-width: 340px;
+}
+.toast {
+  display: flex; align-items: flex-start; gap: 9px;
+  padding: 10px var(--s3);
+  background: var(--overlay); border: 1px solid var(--line-strong);
+  border-radius: var(--r); box-shadow: var(--shadow);
+  font-size: 0.8125rem; line-height: 1.5;
+  animation: rise var(--base) var(--ease);
+}
+.toast.success { border-left: 2px solid var(--success); }
+.toast.error   { border-left: 2px solid var(--danger); }
+.toast.warning { border-left: 2px solid var(--warning); }
+.toast.info    { border-left: 2px solid var(--info); }
+.toast-icon {
+  width: 18px; height: 18px; flex-shrink: 0; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 0.6875rem; font-weight: 700; line-height: 1;
+}
+.toast-icon.success { background: var(--success-bg); color: var(--success); }
+.toast-icon.error   { background: var(--danger-bg);  color: var(--danger); }
+.toast-icon.warning { background: var(--warning-bg); color: var(--warning); }
+.toast-icon.info    { background: var(--info-bg);    color: var(--info); }
+.toast-close { color: var(--text-faint); flex-shrink: 0; }
+.toast-close:hover { color: var(--text); }
+
+/* ── Command palette ── */
+.cmdk-overlay {
+  position: fixed; inset: 0; z-index: 250;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 12vh var(--s5) var(--s5);
+  background: color-mix(in srgb, var(--text) 52%, transparent); backdrop-filter: blur(6px);
+}
+.cmdk-box {
+  width: 100%; max-width: 520px;
+  background: var(--surface); border: 1px solid var(--line-strong);
+  border-radius: var(--r-md); box-shadow: var(--shadow-lg); overflow: hidden;
+  animation: rise var(--base) var(--ease);
+}
+.cmdk-input {
+  width: 100%; height: 46px; padding: 0 var(--s4);
+  background: none; border: none; border-bottom: 1px solid var(--line);
+  font-size: 0.875rem;
+}
+.cmdk-input:focus { outline: none; }
+.cmdk-input::placeholder { color: var(--text-faint); }
+.cmdk-list { max-height: 340px; overflow-y: auto; padding: var(--s2); }
+.cmdk-item {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  height: 34px; padding: 0 var(--s3); border-radius: var(--r);
+  font-size: 0.8125rem; color: var(--text-mid); text-align: left;
+}
+.cmdk-item.active { background: var(--accent-soft); color: var(--text); }
+.cmdk-item.active .cmdk-item-icon { color: var(--accent); }
+.cmdk-item-icon { color: var(--text-faint); display: grid; place-items: center; }
+.cmdk-item-label { flex: 1; }
+.cmdk-hint, .cmdk-item-hint { font-size: 0.6875rem; color: var(--text-faint); }
+.cmdk-empty { padding: var(--s6); text-align: center; font-size: 0.8125rem; color: var(--text-dim); }
+.cmdk-esc-hint {
+  display: flex; gap: var(--s4); padding: 9px var(--s4);
+  border-top: 1px solid var(--line);
+  font-size: 0.6875rem; color: var(--text-faint);
+}
+
+/* ── Lightbox ── */
+.lightbox {
+  position: fixed; inset: 0; z-index: 400;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--s8);
+  background: color-mix(in srgb, var(--text) 88%, transparent); backdrop-filter: blur(8px);
+}
+.lightbox img, .lightbox iframe {
+  max-width: 100%; max-height: 100%;
+  border-radius: var(--r); border: 1px solid var(--line-strong); background: var(--surface);
+}
+.lightbox-close {
+  position: absolute; top: var(--s5); right: var(--s5);
+  width: 34px; height: 34px; border-radius: var(--r);
+  display: grid; place-items: center;
+  background: var(--surface); border: 1px solid var(--line-strong); color: var(--text);
+}
+.lightbox-close:hover { background: var(--raised); }
+
+@media (max-width: 600px) {
+  .modal-overlay { padding: 0; align-items: flex-end; }
+  .modal { max-width: none !important; max-height: 92vh; border-radius: var(--r-lg) var(--r-lg) 0 0; }
+  .toast-stack { left: var(--s4); right: var(--s4); bottom: var(--s4); max-width: none; }
+  .cmdk-overlay { padding: var(--s6) var(--s4); }
+}
+
+/* ── Theme switch ─────────────────────────────────────────────────────────── */
+.theme-switch {
+  position: relative;
+  width: 42px; height: 24px; flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: var(--raised);
+  border: 1px solid var(--line-strong);
+  transition: background var(--base) var(--ease), border-color var(--base) var(--ease);
+}
+.theme-switch:hover { border-color: var(--accent-line); }
+.theme-switch.on { background: var(--accent-soft); }
+.theme-knob {
+  position: absolute; top: 2px; left: 2px;
+  width: 18px; height: 18px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--surface);
+  color: var(--text-mid);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--base) var(--ease), color var(--base) var(--ease);
+}
+.theme-switch.on .theme-knob { transform: translateX(18px); color: var(--warning); }
+.theme-switch.compact { width: 36px; height: 21px; }
+.theme-switch.compact .theme-knob { width: 15px; height: 15px; }
+.theme-switch.compact.on .theme-knob { transform: translateX(15px); }

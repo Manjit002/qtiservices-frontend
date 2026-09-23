@@ -1,0 +1,61 @@
+/* ── Installments ───────────────────────────────────────────────────────── */
+.in-cols { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: var(--s5); align-items: start; }
+.in-rail { position: sticky; top: calc(var(--topbar-h) + var(--s5)); }
+
+.in-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s3); margin-bottom: var(--s5); }
+
+/* ── Queue rows ── */
+.in-q {
+  display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s3) var(--s5);
+  border-bottom: 1px solid var(--line);
+}
+.in-q:last-child { border-bottom: none; }
+.in-q-main { flex: 1; min-width: 0; }
+
+/* ── Plan rows ── */
+.in-row {
+  display: flex; align-items: flex-start; gap: var(--s3);
+  padding: var(--s4) var(--s5);
+  border-bottom: 1px solid var(--line);
+}
+.in-row:last-child { border-bottom: none; }
+.in-row.paid { background: var(--success-bg); }
+.in-n {
+  width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 0.75rem; font-weight: 700;
+  background: var(--warning-bg); color: var(--warning);
+}
+.in-row.paid .in-n { background: var(--success-bg); color: var(--success); }
+.in-row-main { flex: 1; min-width: 0; }
+.in-amt { font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.01em; }
+.in-edit { margin-top: var(--s3); padding-top: var(--s3); border-top: 1px solid var(--line); }
+.in-edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); }
+
+.in-link {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-top: var(--s2); padding: 8px 10px;
+  background: var(--accent-soft); border: 1px solid var(--accent-line); border-radius: var(--r);
+  font-size: 0.72rem;
+}
+.in-link-url {
+  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  color: var(--accent-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* ── Plan builder ── */
+.in-dates { display: grid; gap: var(--s2); margin-top: var(--s3); }
+.in-date-row { display: flex; align-items: center; gap: var(--s2); }
+.in-date-n { width: 22px; font-size: 0.72rem; color: var(--text-dim); flex-shrink: 0; }
+
+@media (max-width: 1100px) {
+  .in-cols { grid-template-columns: 1fr; }
+  .in-rail { position: static; }
+}
+@media (max-width: 700px) {
+  .in-stats { grid-template-columns: repeat(2, 1fr); }
+  .in-edit-grid { grid-template-columns: 1fr; }
+  .in-row { flex-wrap: wrap; }
+}
