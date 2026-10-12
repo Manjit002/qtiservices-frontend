@@ -1,0 +1,142 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   Expert portal — built on the same tokens and primitives as admin
+   (controls.css, base.css). The portal's own accent (violet) comes from
+   [data-portal='expert'] on the shell, so nothing here names a colour.
+
+   The expert's question on every page is "what do I do next?", so each list
+   row carries its one next action (Start / Submit) inline rather than behind
+   a detail view.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Dashboard ──────────────────────────────────────────────────────────── */
+.xp-cols { display: grid; gap: var(--s5); grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); align-items: start; }
+.xp-side { display: grid; gap: var(--s5); min-width: 0; }
+
+/* A work row: identity on the left, urgency, status, and the next action. */
+.xp-row {
+  display: flex; align-items: center; gap: var(--s4);
+  padding: var(--s3) var(--s5);
+  border-bottom: 1px solid var(--line);
+  transition: background var(--fast) var(--ease);
+}
+.xp-row:last-child { border-bottom: none; }
+.xp-row:hover { background: var(--raised); }
+.xp-row-main {
+  flex: 1; min-width: 0; text-align: left;
+  display: grid; gap: 2px; color: inherit;
+}
+.xp-row-main:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: var(--r-sm); }
+.xp-id { font-size: 0.6875rem; font-weight: 600; color: var(--accent-text); }
+.xp-subject { font-size: 0.8125rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.xp-row-meta { display: flex; align-items: center; gap: var(--s4); flex-shrink: 0; }
+.xp-row .meter-col { width: 104px; }
+.xp-row-due { font-size: 0.6875rem; color: var(--text-dim); }
+
+/* ── Availability ───────────────────────────────────────────────────────── */
+.xp-avail { display: grid; gap: 6px; }
+.xp-avail-opt {
+  display: flex; align-items: flex-start; gap: var(--s3);
+  width: 100%; padding: var(--s3); text-align: left;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: var(--surface); color: inherit;
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+.xp-avail-opt:hover { border-color: var(--line-strong); background: var(--raised); }
+.xp-avail-opt[aria-checked='true'] { border-color: var(--accent-line); background: var(--accent-soft); }
+.xp-avail-opt:disabled { cursor: progress; }
+.xp-avail-dot { width: 9px; height: 9px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+.xp-avail-title { font-size: 0.8125rem; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.xp-avail-hint { display: block; font-size: 0.75rem; color: var(--text-dim); margin-top: 1px; }
+.xp-avail-check { margin-left: auto; color: var(--accent-text); flex-shrink: 0; }
+
+/* Compact form for the dashboard: three segments in one row. */
+.xp-avail.compact { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.xp-avail.compact .xp-avail-opt { align-items: center; justify-content: center; padding: 9px var(--s2); }
+.xp-avail.compact .xp-avail-dot { margin-top: 0; }
+.xp-avail.compact .xp-avail-hint, .xp-avail.compact .xp-avail-check { display: none; }
+.xp-avail-note { margin-top: var(--s3); font-size: 0.75rem; line-height: 1.5; color: var(--text-dim); }
+
+/* ── Orders ─────────────────────────────────────────────────────────────── */
+.xp-toolbar { display: flex; gap: var(--s2); flex-wrap: wrap; align-items: center; margin-bottom: var(--s4); }
+.xp-toolbar .ord-search { max-width: 360px; }
+.xp-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+.xp-table th {
+  text-align: left; font-size: 0.6875rem; font-weight: 600; letter-spacing: .04em;
+  color: var(--text-dim); padding: var(--s3) var(--s4); border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.xp-table td { padding: var(--s3) var(--s4); border-bottom: 1px solid var(--line); vertical-align: middle; }
+.xp-table tbody tr:last-child td { border-bottom: none; }
+.xp-table tbody tr { transition: background var(--fast) var(--ease); }
+.xp-table tbody tr:hover { background: var(--raised); }
+.xp-table .num { text-align: right; font-weight: 600; white-space: nowrap; }
+.xp-sort {
+  display: inline-flex; align-items: center; gap: 4px;
+  font: inherit; color: inherit; letter-spacing: inherit;
+}
+.xp-sort:hover { color: var(--text); }
+.xp-order-cell { display: grid; gap: 2px; min-width: 0; max-width: 340px; text-align: left; color: inherit; }
+.xp-order-cell:hover .xp-id { text-decoration: underline; text-underline-offset: 3px; }
+
+.xp-cards { display: none; }
+.xp-card { padding: var(--s4); border-bottom: 1px solid var(--line); }
+.xp-card:last-child { border-bottom: none; }
+.xp-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s3); }
+.xp-card-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s3); margin-top: var(--s3); align-items: end; }
+.xp-card .acts { margin-top: var(--s3); }
+
+/* ── Deadlines ──────────────────────────────────────────────────────────── */
+.xp-dl-grid { display: grid; gap: var(--s5); grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+.xp-dl-card { position: relative; overflow: hidden; }
+.xp-dl-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--flag, var(--line)); }
+.xp-count {
+  min-width: 22px; height: 20px; padding: 0 6px; border-radius: 10px;
+  display: inline-grid; place-items: center;
+  font-size: 0.6875rem; font-weight: 600;
+  background: var(--raised); border: 1px solid var(--line); color: var(--text-mid);
+}
+
+/* ── Files ──────────────────────────────────────────────────────────────── */
+.xp-picker { display: flex; gap: var(--s3); align-items: flex-end; flex-wrap: wrap; padding: var(--s4) var(--s5); }
+.xp-picker .field { flex: 1 1 320px; min-width: 0; }
+.xp-upload { padding: 0 var(--s5) var(--s5); }
+.xp-upload-foot { display: flex; gap: var(--s2); justify-content: flex-end; margin-top: var(--s3); flex-wrap: wrap; }
+.xp-files { padding: var(--s4) var(--s5) var(--s5); }
+.xp-file .fc-icon { width: 34px; height: 34px; border-radius: var(--r); display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); }
+.xp-file-from { font-size: 0.6875rem; color: var(--text-faint); margin-top: 2px; text-transform: capitalize; }
+.xp-file .fc-btn { display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 28px; }
+
+/* ── Profile ────────────────────────────────────────────────────────────── */
+.xp-prof-grid { display: grid; gap: var(--s5); grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+.xp-ident { display: flex; align-items: center; gap: var(--s4); padding: var(--s5); border-bottom: 1px solid var(--line); }
+.xp-ident .avatar { width: 44px; height: 44px; font-size: 1rem; }
+.xp-dl { display: grid; }
+.xp-dl > div { display: flex; justify-content: space-between; gap: var(--s4); padding: var(--s3) var(--s5); border-bottom: 1px solid var(--line); }
+.xp-dl > div:last-child { border-bottom: none; }
+.xp-dl dt { font-size: 0.75rem; color: var(--text-dim); }
+.xp-dl dd { font-size: 0.8125rem; text-align: right; min-width: 0; overflow-wrap: anywhere; }
+
+/* ── Order detail modal ─────────────────────────────────────────────────── */
+.xp-detail-sub { font-size: 0.8125rem; color: var(--text-mid); margin-top: -2px; }
+.xp-instructions {
+  margin-top: var(--s4); padding: var(--s4);
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--r);
+  font-size: 0.8125rem; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere;
+}
+
+@media (max-width: 1100px) {
+  .xp-cols { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 860px) {
+  .xp-table-wrap { display: none; }
+  .xp-cards { display: block; }
+  .xp-dl-grid, .xp-prof-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .xp-row { flex-wrap: wrap; gap: var(--s2) var(--s3); padding: var(--s3) var(--s4); }
+  .xp-row-main { flex-basis: 100%; }
+  .xp-row-meta { flex: 1; justify-content: space-between; }
+  .xp-row .meter-col { flex: 1; width: auto; }
+  .xp-toolbar .ord-search { max-width: none; flex-basis: 100%; }
+  .xp-picker .btn { flex: 1; }
+}
